@@ -1,0 +1,85 @@
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>HealthyXmile · En mantenimiento</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        padding: 1.5rem clamp(1rem, 6vw, 6rem);
+        font-family: "Outfit", system-ui, sans-serif;
+        color: #fff;
+        background:
+          linear-gradient(100deg, rgba(4, 47, 58, .92) 0%, rgba(8, 94, 110, .75) 45%, rgba(8, 94, 110, .15) 100%),
+          url("/fondo.webp") center right / cover no-repeat,
+          #0b5563;
+      }
+      .card {
+        max-width: 34rem;
+        padding: clamp(1.75rem, 4vw, 3rem);
+        border-radius: 1.5rem;
+        background: rgba(255, 255, 255, .08);
+        border: 1px solid rgba(255, 255, 255, .18);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, .25);
+        animation: up .8s ease-out both;
+      }
+      .brand { display: flex; align-items: center; gap: .6rem; font-weight: 600; letter-spacing: .02em; }
+      .brand svg { width: 2.4rem; height: 2.4rem; animation: float 3s ease-in-out infinite; }
+      .badge {
+        display: inline-flex; align-items: center; gap: .5rem;
+        margin: 2rem 0 1rem; padding: .35rem .9rem;
+        border-radius: 999px; background: rgba(94, 234, 212, .15);
+        color: #99f6e4; font-size: .85rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em;
+      }
+      .dot { width: .5rem; height: .5rem; border-radius: 50%; background: #5eead4; animation: pulse 1.6s infinite; }
+      h1 { margin: 0 0 1rem; font-size: clamp(2.2rem, 6vw, 3.6rem); line-height: 1.05; font-weight: 700; }
+      h1 span { color: #5eead4; }
+      p { margin: 0; font-size: 1.1rem; font-weight: 300; line-height: 1.6; color: #e2f3f5; }
+      .bar { height: .4rem; margin-top: 2rem; border-radius: 999px; background: rgba(255, 255, 255, .15); overflow: hidden; }
+      .bar::after {
+        content: ""; display: block; width: 40%; height: 100%; border-radius: inherit;
+        background: linear-gradient(90deg, #5eead4, #fff);
+        animation: load 2.2s ease-in-out infinite;
+      }
+      small { display: block; margin-top: 1.5rem; color: #a7d4da; }
+      @keyframes up { from { opacity: 0; transform: translateY(20px); } }
+      @keyframes float { 50% { transform: translateY(-4px); } }
+      @keyframes pulse { 50% { opacity: .3; } }
+      @keyframes load { from { transform: translateX(-100%); } to { transform: translateX(250%); } }
+      @media (max-width: 700px) {
+        body {
+          justify-content: center;
+          background:
+            linear-gradient(rgba(4, 47, 58, .85), rgba(4, 47, 58, .85)),
+            url("/fondo.webp") 70% center / cover no-repeat,
+            #0b5563;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+    </style>
+  </head>
+  <body>
+    <main class="card">
+      <div class="brand">
+        <svg viewBox="0 0 64 64" fill="none" stroke="#5eead4" stroke-width="3.5" stroke-linejoin="round" aria-hidden="true">
+          <path d="M20 8c-8 0-13 6-13 15 0 7 3 11 5 17 2 7 3 18 8 18 5 0 5-14 12-14s7 14 12 14c5 0 6-11 8-18 2-6 5-10 5-17 0-9-5-15-13-15-5 0-8 3-12 3S25 8 20 8z" />
+        </svg>
+        HealthyXmile
+      </div>
+      <div class="badge"><span class="dot"></span> En mantenimiento</div>
+      <h1>Estamos cuidando <span>tu sonrisa</span></h1>
+      <p>Nuestro sitio está en mantenimiento para ofrecerte una mejor experiencia. Muy pronto estaremos de vuelta.</p>
+      <div class="bar" role="presentation"></div>
+      <small>© {new Date().getFullYear()} healthyxmile.com</small>
+    </main>
+  </body>
+</html>
