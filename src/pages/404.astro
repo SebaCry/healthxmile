@@ -1,0 +1,23 @@
+---
+import Base from "../layouts/Base.astro";
+import { nav } from "../site";
+---
+
+<Base
+  title="Page not found | Healthy Xmile Miami"
+  description="That page doesn't exist. Find veneers, smile design and pricing information here."
+  path="/404"
+>
+  <section class="band">
+    <div class="shell">
+      <h1>That page isn't here</h1>
+      <p class="lede">The link may be old, or the address may have a typo. Here's everything on the site:</p>
+      <ul class="rule-list">
+        {nav.map(([href, label]) => (
+          <li><a href={href}>{label}</a></li>
+        ))}
+        <li><a href="/">Home</a></li>
+      </ul>
+    </div>
+  </section>
+</Base>

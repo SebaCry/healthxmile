@@ -1,0 +1,122 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHero from "../components/PageHero.astro";
+import Faq from "../components/Faq.astro";
+import { price } from "../site";
+
+const faq: [string, string][] = [
+  [
+    "Is smile design a treatment?",
+    "No, it's the plan. It's what happens before we decide whether porcelain, composite or neither is right for you.",
+  ],
+  [
+    "Can I see how it will look before I pay for treatment?",
+    "Yes. The digital preview and the trial smile are part of the process, before anything permanent is made.",
+  ],
+  [
+    "Can I pick the shade?",
+    "Yes, and you choose it at the trial smile stage, looking in the mirror. If the shade you want won't look natural, we'll say so, but the decision is yours.",
+  ],
+  [
+    "What does the consultation cost?",
+    `${price.consultation}, credited toward treatment if you go ahead.`,
+  ],
+];
+---
+
+<Base
+  title="Digital Smile Design in Miami | Preview Before You Commit"
+  description="Digital smile design in Miami. We analyze your face and show you the result in a preview before touching a tooth. Consultation credited toward treatment."
+  path="/smile-design"
+>
+  <PageHero
+    title="See it before you decide"
+    lede="Smile design isn't a treatment, it's the plan. It's what happens before we decide whether porcelain, composite or neither is right for you."
+    image="/img/hero-smile.webp"
+    alt="Patient smiling during a smile design consultation"
+  />
+
+  <section class="band">
+    <div class="shell">
+      <h2>What we analyze</h2>
+      <ul class="rule-list analysis">
+        <li>
+          <h3>Your face, not just your teeth</h3>
+          <p>
+            The line of your eyes, the width of your smile, how your upper lip falls when you
+            speak, how much gum shows when you really laugh. A smile that's correct on a model can
+            look wrong on a face.
+          </p>
+        </li>
+        <li>
+          <h3>Your proportions</h3>
+          <p>
+            Width-to-height ratio of each tooth, the progression of the laterals, the position of
+            the midline.
+          </p>
+        </li>
+        <li>
+          <h3>Your function</h3>
+          <p>
+            How you close, where you load, whether you clench at night. A smile that looks good
+            and fractures within a year is no result at all.
+          </p>
+        </li>
+        <li>
+          <h3>Your age and personality</h3>
+          <p>
+            Perfectly straight, very white edges on a 55-year-old look installed. Natural has
+            texture, translucency and a deliberate touch of asymmetry.
+          </p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="shell split">
+      <div class="prose">
+        <h2>What you get</h2>
+        <ul>
+          <li>Professional photo set of your current smile</li>
+          <li>Digital preview on your own photographs</li>
+          <li>Trial smile in temporary material</li>
+          <li>Written treatment plan with options and pricing</li>
+          <li>Time to think about it</li>
+        </ul>
+        <p class="note">
+          Consultation with design: {price.consultation}, credited toward treatment if you go
+          ahead.
+        </p>
+      </div>
+      <img
+        src="/img/veneers-closeup.webp"
+        width="900"
+        height="1200"
+        alt="Close-up of a designed smile"
+        loading="lazy"
+      />
+    </div>
+  </section>
+
+  <Faq items={faq} />
+
+  <section class="band cta-band">
+    <div class="shell">
+      <h2>Start with the plan</h2>
+      <p class="lede">
+        Exam, photographs and a preliminary preview. You leave knowing what's possible and what
+        it costs.
+      </p>
+      <div class="actions">
+        <a class="btn" href="/contact">Book your consultation</a>
+        <a class="btn btn-quiet" href="/veneers-cost-miami">See pricing</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .analysis h3 { font-size: 1.15rem; }
+  .analysis p { margin: 0; color: var(--ink-soft); }
+</style>

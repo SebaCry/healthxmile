@@ -1,0 +1,38 @@
+---
+interface Props {
+  title: string;
+  lede: string;
+  image?: string;
+  alt?: string;
+}
+const { title, lede, image, alt } = Astro.props;
+---
+
+<section class="page-hero">
+  <div class="shell hero-grid">
+    <div>
+      <h1>{title}</h1>
+      <p class="lede">{lede}</p>
+    </div>
+    {image && <img src={image} width="900" height="900" alt={alt} fetchpriority="high" />}
+  </div>
+</section>
+
+<style>
+  .page-hero { padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(2.5rem, 5vw, 4rem); }
+  .hero-grid {
+    display: grid;
+    gap: clamp(1.8rem, 4vw, 3.5rem);
+    align-items: end;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  @media (min-width: 900px) {
+    .hero-grid { grid-template-columns: 1.15fr 0.85fr; }
+  }
+  img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 14rem 14rem 1rem 1rem;
+  }
+</style>

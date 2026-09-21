@@ -1,85 +1,268 @@
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="robots" content="noindex" />
-    <title>HealthyXmile · Under Maintenance</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet" />
-    <style>
-      * { box-sizing: border-box; }
-      body {
-        margin: 0;
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        padding: 1.5rem clamp(1rem, 6vw, 6rem);
-        font-family: "Outfit", system-ui, sans-serif;
-        color: #fff;
-        background:
-          linear-gradient(100deg, rgba(4, 47, 58, .92) 0%, rgba(8, 94, 110, .75) 45%, rgba(8, 94, 110, .15) 100%),
-          url("/fondo.webp") center right / cover no-repeat,
-          #0b5563;
-      }
-      .card {
-        max-width: 34rem;
-        padding: clamp(1.75rem, 4vw, 3rem);
-        border-radius: 1.5rem;
-        background: rgba(255, 255, 255, .08);
-        border: 1px solid rgba(255, 255, 255, .18);
-        backdrop-filter: blur(10px);
-        box-shadow: 0 20px 60px rgba(0, 0, 0, .25);
-        animation: up .8s ease-out both;
-      }
-      .brand { display: flex; align-items: center; gap: .6rem; font-weight: 600; letter-spacing: .02em; }
-      .brand svg { width: 2.4rem; height: 2.4rem; animation: float 3s ease-in-out infinite; }
-      .badge {
-        display: inline-flex; align-items: center; gap: .5rem;
-        margin: 2rem 0 1rem; padding: .35rem .9rem;
-        border-radius: 999px; background: rgba(94, 234, 212, .15);
-        color: #99f6e4; font-size: .85rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em;
-      }
-      .dot { width: .5rem; height: .5rem; border-radius: 50%; background: #5eead4; animation: pulse 1.6s infinite; }
-      h1 { margin: 0 0 1rem; font-size: clamp(2.2rem, 6vw, 3.6rem); line-height: 1.05; font-weight: 700; }
-      h1 span { color: #5eead4; }
-      p { margin: 0; font-size: 1.1rem; font-weight: 300; line-height: 1.6; color: #e2f3f5; }
-      .bar { height: .4rem; margin-top: 2rem; border-radius: 999px; background: rgba(255, 255, 255, .15); overflow: hidden; }
-      .bar::after {
-        content: ""; display: block; width: 40%; height: 100%; border-radius: inherit;
-        background: linear-gradient(90deg, #5eead4, #fff);
-        animation: load 2.2s ease-in-out infinite;
-      }
-      small { display: block; margin-top: 1.5rem; color: #a7d4da; }
-      @keyframes up { from { opacity: 0; transform: translateY(20px); } }
-      @keyframes float { 50% { transform: translateY(-4px); } }
-      @keyframes pulse { 50% { opacity: .3; } }
-      @keyframes load { from { transform: translateX(-100%); } to { transform: translateX(250%); } }
-      @media (max-width: 700px) {
-        body {
-          justify-content: center;
-          background:
-            linear-gradient(rgba(4, 47, 58, .85), rgba(4, 47, 58, .85)),
-            url("/fondo.webp") 70% center / cover no-repeat,
-            #0b5563;
-        }
-      }
-      @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
-    </style>
-  </head>
-  <body>
-    <main class="card">
-      <div class="brand">
-        <svg viewBox="0 0 64 64" fill="none" stroke="#5eead4" stroke-width="3.5" stroke-linejoin="round" aria-hidden="true">
-          <path d="M20 8c-8 0-13 6-13 15 0 7 3 11 5 17 2 7 3 18 8 18 5 0 5-14 12-14s7 14 12 14c5 0 6-11 8-18 2-6 5-10 5-17 0-9-5-15-13-15-5 0-8 3-12 3S25 8 20 8z" />
-        </svg>
-        HealthyXmile
+---
+import Base from "../layouts/Base.astro";
+import Faq from "../components/Faq.astro";
+import { clinic, price } from "../site";
+
+const facts = [
+  ["Smiles designed in Miami", "[N]"],
+  ["Digital preview", "Before treatment begins"],
+  ["Lab fees", "Included, never added later"],
+  ["Payment plans", `From ${price.monthly} a month`],
+];
+
+const faq: [string, string][] = [
+  [
+    "Does getting veneers hurt?",
+    "No. We use local anesthesia when preparation is involved, and no-prep composite veneers usually don't need it at all. Some cold sensitivity in the first few days is normal and resolves on its own.",
+  ],
+  [
+    "Will you shave down my teeth?",
+    "With porcelain, a thin layer of enamel is usually removed, 0.3 to 0.7 mm. In some cases it can be avoided entirely. We tell you which applies to you at your consultation, with your photos in hand.",
+  ],
+  [
+    "How long does the whole thing take?",
+    "Composite veneers are done in one visit. Porcelain takes 2 to 3 weeks across 3 or 4 appointments.",
+  ],
+  [
+    "Will they look fake?",
+    "Only if they're badly designed. A natural veneer has surface texture, translucency at the edge and a slight intentional asymmetry. Shade is chosen against your skin, your eyes and your age, not against the whitest tab available.",
+  ],
+];
+---
+
+<Base
+  title="Smile Design in Miami | Porcelain & Composite Veneers – Healthy Xmile"
+  description="Custom porcelain and composite veneers in Miami. See a digital preview of your new smile before we touch a single tooth. Transparent pricing. Book a consultation."
+  path="/"
+>
+  <section class="hero">
+    <div class="shell hero-grid">
+      <div>
+        <h1>A smile designed for your face, not from a catalog</h1>
+        <p class="lede">
+          We don't work from a template. We study your proportions, your bite and the way your
+          lip moves when you talk, then design porcelain or composite veneers that still look
+          like you.
+        </p>
+        <div class="actions">
+          <a class="btn" href="/contact">Book your consultation</a>
+          <a class="btn btn-quiet" href="/smile-design">See how it works</a>
+        </div>
+        <p class="hero-meta">
+          English and Spanish spoken<br />
+          {clinic.street}, {clinic.city}, {clinic.region} {clinic.zip}<br />
+          {clinic.phone}
+        </p>
       </div>
-      <div class="badge"><span class="dot"></span> Under maintenance</div>
-      <h1>Taking care of <span>your smile</span></h1>
-      <p>Our website is currently undergoing maintenance to bring you a better experience. We'll be back very soon.</p>
-      <div class="bar" role="presentation"></div>
-      <small>© {new Date().getFullYear()} healthyxmile.com</small>
-    </main>
-  </body>
-</html>
+      <figure class="arch">
+        <img
+          src="/img/hero-smile.webp"
+          width="1000"
+          height="1500"
+          alt="Close-up of a patient smiling after veneer treatment"
+          fetchpriority="high"
+        />
+      </figure>
+    </div>
+  </section>
+
+  <section class="band facts-band">
+    <div class="shell">
+      <dl class="facts">
+        {facts.map(([label, value]) => (
+          <div>
+            <dt>{label}</dt>
+            <dd>{value}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="shell">
+      <h2>We do one thing</h2>
+      <p class="lede">
+        Healthy Xmile is not a general dental office. We focus on anterior cosmetic dentistry:
+        porcelain veneers, composite veneers, and the design work that holds them together.
+        That focus is why our cases look natural.
+      </p>
+      <ul class="rule-list services">
+        <li>
+          <h3>Porcelain veneers</h3>
+          <p>
+            Thin ceramic shells that correct shape, color and apparent position. Stain
+            resistant, 10 to 20 years with proper care, and they bring back the translucency of
+            natural enamel.
+          </p>
+          <a href="/porcelain-veneers-miami">Porcelain veneers</a>
+        </li>
+        <li>
+          <h3>Composite veneers</h3>
+          <p>
+            Sculpted directly onto the tooth in a single visit. Lower cost, often reversible,
+            and adjustable later. A good fit for targeted corrections, or for testing a change
+            before committing.
+          </p>
+          <a href="/composite-veneers-miami">Composite veneers</a>
+        </li>
+        <li>
+          <h3>Smile design</h3>
+          <p>
+            The full plan: facial analysis, photography, digital preview and a trial smile in
+            your mouth before anything is final.
+          </p>
+          <a href="/smile-design">How smile design works</a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="band process">
+    <div class="shell process-grid">
+      <div>
+        <h2>How it works</h2>
+        <p class="lede">Five visits, and you approve the result before anything permanent is made.</p>
+        <img class="process-img" src="/img/dentist-at-work.webp" width="900" height="600" alt="Dentist examining a patient in the treatment chair" loading="lazy" />
+      </div>
+      <ol class="steps">
+        <li>
+          <h3>Consultation</h3>
+          <p>We examine your teeth, gums and bite, take photographs and scan. We tell you what's possible and what isn't, without overpromising.</p>
+        </li>
+        <li>
+          <h3>Design and preview</h3>
+          <p>We design your smile on your own photos. You review it, we adjust it. Nothing gets made until you're satisfied.</p>
+        </li>
+        <li>
+          <h3>Trial smile</h3>
+          <p>We place a temporary version over your teeth so you can see it move, talk, smile, and decide with real information.</p>
+        </li>
+        <li>
+          <h3>Placement</h3>
+          <p>We bond the final veneers, adjust your bite and polish. You leave with your smile finished that day.</p>
+        </li>
+        <li>
+          <h3>Follow-up</h3>
+          <p>A check-up shortly after placement, plus long-term follow-up and care instructions.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="shell">
+      <h2>Why patients choose us</h2>
+      <div class="reasons">
+        <div>
+          <h3>We say no when no is the right answer</h3>
+          <p>If your teeth need something else before veneers, we tell you. A veneer over an unresolved problem is money wasted.</p>
+        </div>
+        <div>
+          <h3>You see it before you commit</h3>
+          <p>The digital preview isn't an upsell. It's part of the process, and it's included in the consultation.</p>
+        </div>
+        <div>
+          <h3>Fixed pricing</h3>
+          <p>The estimate you sign is what you pay. Diagnosis, design, temporaries and follow-ups are in the price.</p>
+        </div>
+        <div>
+          <h3>Fully bilingual</h3>
+          <p>Consultation, treatment plan and follow-up in English or Spanish, whichever you prefer.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Faq items={faq} />
+
+  <section class="band cta-band">
+    <div class="shell">
+      <h2>Ready to see your new smile?</h2>
+      <p class="lede">
+        Your consultation includes an exam, photographs and a preliminary digital preview.
+        No obligation.
+      </p>
+      <div class="actions">
+        <a class="btn" href="/contact">Book your consultation</a>
+        <a class="btn btn-quiet" href="/veneers-cost-miami">See pricing</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero { padding-block: clamp(2.5rem, 6vw, 5rem) 0; }
+  .hero-grid {
+    display: grid;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  @media (min-width: 900px) {
+    .hero-grid { grid-template-columns: 1.05fr 0.95fr; }
+  }
+  .hero-meta { margin-top: 2rem; color: var(--ink-soft); font-size: 0.98rem; line-height: 1.8; }
+
+  .arch { margin: 0; position: relative; }
+  .arch::before {
+    content: "";
+    position: absolute;
+    inset: -1.2rem -1.2rem 0;
+    border: 1.5px solid var(--cyan);
+    border-bottom: none;
+    border-radius: var(--arch);
+  }
+  .arch img {
+    position: relative;
+    border-radius: var(--arch);
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    max-height: min(68vh, 34rem);
+    object-fit: cover;
+    object-position: 50% 62%;
+    animation: rise 0.9s cubic-bezier(0.22, 0.75, 0.3, 1) both;
+  }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(2rem); }
+  }
+
+  .facts-band { background: var(--blush); border-top: none; }
+  .facts {
+    margin: 0;
+    display: grid;
+    gap: 1.8rem;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  }
+  .facts dt { color: var(--ink-soft); font-size: 0.95rem; }
+  .facts dd {
+    margin: 0.2rem 0 0;
+    font-family: Gabarito, sans-serif;
+    font-size: 1.35rem;
+    font-weight: 600;
+  }
+
+  .services li a { font-weight: 600; }
+  .services p { margin-bottom: 0.6rem; }
+
+  .process-grid { display: grid; gap: clamp(2rem, 5vw, 4rem); grid-template-columns: minmax(0, 1fr); }
+  @media (min-width: 900px) {
+    .process-grid { grid-template-columns: 0.9fr 1.1fr; }
+  }
+  .process-img {
+    margin-top: 2rem;
+    border-radius: 1rem;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  .reasons {
+    display: grid;
+    gap: 2rem clamp(2rem, 5vw, 4rem);
+    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+    margin-top: 2.5rem;
+  }
+  .reasons h3 { font-size: 1.15rem; }
+  .reasons p { color: var(--ink-soft); margin: 0; }
+</style>

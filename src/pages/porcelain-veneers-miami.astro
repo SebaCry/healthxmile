@@ -1,0 +1,173 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHero from "../components/PageHero.astro";
+import Faq from "../components/Faq.astro";
+import { price } from "../site";
+
+const faq: [string, string][] = [
+  [
+    "Will you shave down my teeth?",
+    "In most cases a very thin layer of enamel is removed, usually 0.3 to 0.7 mm. In some cases — small, worn or spaced teeth — no-prep veneers are possible. We tell you which case is yours at the consultation.",
+  ],
+  [
+    "How long do porcelain veneers last?",
+    "Ten to twenty years with proper care. What shortens their life is usually grinding without a night guard or biting hard objects, not the material itself.",
+  ],
+  [
+    "What if one breaks?",
+    "Porcelain is replaced, just that unit, not the whole case. Our veneers carry a warranty against fracture from material defect.",
+  ],
+  [
+    "Do I need whitening first?",
+    "If you're only treating some teeth, yes: whitening comes first, then two weeks of settling, because veneers won't change shade afterward. If you're treating the whole smile, no.",
+  ],
+  [
+    "Does insurance cover veneers?",
+    "Usually not, since they're considered cosmetic. If part of your treatment is restorative, partial coverage may apply. We verify your benefits at no charge.",
+  ],
+];
+---
+
+<Base
+  title="Porcelain Veneers in Miami | Cost, Process & How Long They Last"
+  description="Custom porcelain veneers in Miami. The full process, how long they last, what they cost and whether you're a candidate. Digital preview included. Book today."
+  path="/porcelain-veneers-miami"
+>
+  <PageHero
+    title="Porcelain veneers in Miami"
+    lede="A ceramic shell less than a millimeter thick, bonded to the front of the tooth. It changes shape, color, size and apparent alignment without moving the tooth."
+    image="/img/veneers-closeup.webp"
+    alt="Close-up of a smile restored with porcelain veneers"
+  />
+
+  <section class="band">
+    <div class="shell split">
+      <div class="prose">
+        <p>
+          Porcelain veneers are the most predictable cosmetic dental treatment available today,
+          and also the one most often done badly. The difference between a veneer you notice and
+          one you don't comes from the design work and the ceramist's hand, not the brand of the
+          material.
+        </p>
+
+        <h3>What porcelain veneers fix</h3>
+        <ul>
+          <li>Stains that don't respond to whitening</li>
+          <li>Teeth worn down by grinding or age</li>
+          <li>Gaps between teeth</li>
+          <li>Chipped or fractured teeth</li>
+          <li>Small or disproportionate teeth</li>
+          <li>Mild crowding, without braces</li>
+          <li>Uneven smile lines</li>
+        </ul>
+        <p class="note">
+          What they don't fix: severe crowding, significant bite problems, active gum disease or
+          untreated decay. Those come first, and we'll tell you so at the consultation.
+        </p>
+      </div>
+
+      <div class="prose">
+        <h3 style="margin-top:0">Will you shave down my teeth?</h3>
+        <p>It's the question we get most, and it deserves a straight answer.</p>
+        <p>
+          In most cases yes, a very thin layer of enamel is removed, usually between 0.3 and 0.7
+          millimeters. That's less than the thickness of a fingernail, and it's done so the veneer
+          doesn't look bulky and so the bond lasts.
+        </p>
+        <p>
+          In some cases — small, worn or spaced teeth — no-prep or minimal-prep veneers are
+          possible. It isn't a technique that works for everyone: it depends on the position and
+          size of your teeth, not on what an ad promises.
+        </p>
+        <p>
+          At your consultation we tell you which case is yours, with your photographs in front of
+          you.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="shell split">
+      <div>
+        <h2>The process, visit by visit</h2>
+        <p class="lede">Two to three weeks from the first appointment to the finished smile.</p>
+      </div>
+      <ol class="steps">
+        <li>
+          <h3>Diagnosis and design</h3>
+          <p>Clinical exam, photographs, digital scan and facial proportion analysis. We design your smile digitally and show it to you on your own photos.</p>
+        </li>
+        <li>
+          <h3>Trial smile</h3>
+          <p>We bring the design into your mouth with a temporary material. You see it, speak with it, and request changes. Everything is settled here.</p>
+        </li>
+        <li>
+          <h3>Preparation and temporaries</h3>
+          <p>Minimal preparation, final records taken. You leave with temporaries that match the approved design.</p>
+        </li>
+        <li>
+          <h3>Final placement</h3>
+          <p>Try-in, shade check, bonding, bite adjustment and polish.</p>
+        </li>
+        <li>
+          <h3>Follow-up</h3>
+          <p>A check-up after placement, and again a few months later.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="shell split">
+      <div class="prose">
+        <h2>How long they last</h2>
+        <p>
+          Ten to twenty years with proper care, and there are documented cases well beyond that.
+          What shortens their life isn't the material, it's habit: grinding without a night guard,
+          opening things with your teeth, chewing ice.
+        </p>
+        <h3>Care</h3>
+        <ul>
+          <li>Normal brushing, three times a day, with a non-abrasive paste</li>
+          <li>Floss daily</li>
+          <li>A night guard if you clench while sleeping</li>
+          <li>Professional cleaning every six months</li>
+          <li>Porcelain doesn't stain, but your gums and neighboring teeth do</li>
+        </ul>
+        <p>You don't need special toothpaste or unusual brushes. You need consistency.</p>
+      </div>
+      <div class="prose">
+        <h2>Cost in Miami</h2>
+        <p>
+          At Healthy Xmile, porcelain veneers start at {price.porcelainTooth} per tooth, and a
+          full case of eight to ten veneers starts at {price.porcelainCase}.
+        </p>
+        <p>
+          Included: diagnosis, digital design, trial smile, temporaries, placement and follow-ups.
+          No separate design or lab charge.
+        </p>
+        <p>
+          Financing available from {price.monthly} a month through {price.lender}.
+        </p>
+        <p><a href="/veneers-cost-miami">See full pricing and payment plans</a></p>
+      </div>
+    </div>
+  </section>
+
+  <Faq items={faq} />
+
+  <section class="band cta-band">
+    <div class="shell">
+      <h2>Find out if porcelain is right for your case</h2>
+      <p class="lede">
+        Bring your questions. We'll take photographs, show you a preview and give you a written
+        plan with pricing.
+      </p>
+      <div class="actions">
+        <a class="btn" href="/contact">Book your consultation</a>
+        <a class="btn btn-quiet" href="/composite-veneers-miami">Compare with composite</a>
+      </div>
+    </div>
+  </section>
+</Base>

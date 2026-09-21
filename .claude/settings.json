@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s \"https://unsplash.com/napi/search/photos?query=smile%20teeth%20woman%20portrait&per_page=14&orientation=landscape\")",
+      "Bash(node -e \"let d='';process.stdin.on\\('data',c=>d+=c\\).on\\('end',\\(\\)=>{JSON.parse\\(d\\).results.filter\\(r=>!r.plus\\).forEach\\(r=>console.log\\(r.id,'|',r.alt_description,'|',r.urls.raw.split\\('?'\\)[0]\\)\\)}\\)\")",
+      "Bash(mkdir -p public/img)",
+      "Bash(curl -sL -o public/img/hero-smile.webp \"https://images.unsplash.com/photo-1567516364473-233c4b6fcfbe?w=1000&q=72&fm=webp\")",
+      "Bash(curl -sL -o public/img/veneers-closeup.webp \"https://images.unsplash.com/photo-1654373535457-383a0a4d00f9?w=900&q=72&fm=webp\")",
+      "Bash(curl -sL -o public/img/patient-laugh.webp \"https://images.unsplash.com/photo-1548382131-e0ebb1f0cdea?w=900&q=72&fm=webp\")",
+      "Bash(curl -sL -o public/img/office.webp \"https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=1200&q=72&fm=webp\")",
+      "PowerShell(npm run build 2>&1)",
+      "PowerShell(npx astro preview stop 2>&1)"
+    ]
+  }
+}

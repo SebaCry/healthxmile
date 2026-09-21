@@ -1,0 +1,100 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHero from "../components/PageHero.astro";
+import Faq from "../components/Faq.astro";
+import { price } from "../site";
+
+const rows: [string, string][] = [
+  ["Composite veneer, per tooth", `from ${price.compositeTooth}`],
+  ["Porcelain veneer, per tooth", `from ${price.porcelainTooth}`],
+  ["Full composite case, 8 teeth", `from ${price.compositeCase}`],
+  ["Full porcelain case, 8 teeth", `from ${price.porcelainCase}`],
+  ["Consultation with digital design", `${price.consultation}, credited toward treatment`],
+];
+
+const faq: [string, string][] = [
+  [
+    "Does insurance cover veneers?",
+    "Most dental plans don't cover purely cosmetic treatment. If part of your case is restorative, partial coverage may apply. We verify your benefits at no charge.",
+  ],
+  [
+    "Can the price change once treatment starts?",
+    "Only if there's decay, gum disease or a need for prior treatment. That's quoted separately and disclosed before we begin, never mid-treatment.",
+  ],
+  [
+    "Is the lab fee extra?",
+    "No. Diagnosis, design, trial smile, temporaries, placement, bite adjustment and follow-ups are all included in the quoted price.",
+  ],
+  [
+    "How does financing work?",
+    `We work with ${price.lender}, with plans from ${price.monthly} a month. Approval takes minutes and can be done online before your visit.`,
+  ],
+];
+---
+
+<Base
+  title="How Much Do Veneers Cost in Miami? 2026 Pricing – Healthy Xmile"
+  description="Real pricing for porcelain and composite veneers in Miami. Per-tooth cost, full cases, what's included, and financing plans. No hidden lab fees."
+  path="/veneers-cost-miami"
+>
+  <PageHero
+    title="How much do veneers cost in Miami?"
+    lede="We publish our pricing because you deserve to know what you're walking into before you book."
+  />
+
+  <section class="band">
+    <div class="shell split">
+      <div>
+        <div class="table-scroll">
+          <table>
+            <tbody>
+              {rows.map(([label, value]) => (
+                <tr>
+                  <th scope="row">{label}</th>
+                  <td>{value}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p class="note" style="margin-top:2rem">
+          Financing from {price.monthly} a month through {price.lender}. Approval takes minutes
+          and can be done online before your visit.
+        </p>
+      </div>
+
+      <div class="prose">
+        <h2>What's included</h2>
+        <p>
+          Diagnosis, photography, digital design, trial smile, temporaries, placement, bite
+          adjustment and follow-ups. We don't charge separately for design or lab work.
+        </p>
+        <h3>What can change the price</h3>
+        <p>
+          If there's decay, gum disease or a need for prior treatment, it's quoted separately and
+          disclosed before we begin. Never mid-treatment.
+        </p>
+        <h3>Insurance</h3>
+        <p>
+          Most dental plans don't cover purely cosmetic treatment. If part of your case is
+          restorative, partial coverage may apply. We verify your benefits at no charge.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <Faq items={faq} />
+
+  <section class="band cta-band">
+    <div class="shell">
+      <h2>Get your case quoted in writing</h2>
+      <p class="lede">
+        The estimate you sign is what you pay. Book a consultation and leave with a written plan.
+      </p>
+      <div class="actions">
+        <a class="btn" href="/contact">Book your consultation</a>
+        <a class="btn btn-quiet" href="/porcelain-veneers-miami">Porcelain veneers</a>
+      </div>
+    </div>
+  </section>
+</Base>

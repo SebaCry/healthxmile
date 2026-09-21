@@ -1,0 +1,125 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHero from "../components/PageHero.astro";
+import { clinic, form, pending } from "../site";
+
+const tel = pending(clinic.phone) ? null : `tel:${clinic.phone.replace(/[^+\d]/g, "")}`;
+const wa = pending(clinic.whatsapp)
+  ? null
+  : `https://wa.me/${clinic.whatsapp.replace(/[^\d]/g, "")}`;
+const mail = pending(clinic.email) ? null : `mailto:${clinic.email}`;
+---
+
+<Base
+  title="Book Your Consultation | Healthy Xmile Miami"
+  description="Book a veneers and smile design consultation in Miami. Exam, photographs and a digital preview, in English or Spanish."
+  path="/contact"
+>
+  <PageHero
+    title="Book your consultation"
+    lede="Exam, photographs and a preliminary digital preview. Tell us what you'd like to change and we'll tell you what's possible."
+    image="/img/office.webp"
+    alt="Reception area of the Healthy Xmile dental office in Miami"
+  />
+
+  <section class="band">
+    <div class="shell split">
+      <div class="prose">
+        <h2>Visit us</h2>
+        <p>
+          {clinic.street}<br />
+          {clinic.city}, {clinic.region} {clinic.zip}
+        </p>
+        <p>
+          Phone: {tel ? <a href={tel}>{clinic.phone}</a> : clinic.phone}<br />
+          WhatsApp: {wa ? <a href={wa}>{clinic.whatsapp}</a> : clinic.whatsapp}<br />
+          Email: {mail ? <a href={mail}>{clinic.email}</a> : clinic.email}
+        </p>
+
+        <h3>Hours</h3>
+        <table>
+          <tbody>
+            {clinic.hours.map(([day, time]) => (
+              <tr>
+                <th scope="row">{day}</th>
+                <td>{time}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        <p class="note" style="margin-top:2rem">
+          Consultations are available in English and Spanish. If you're traveling to Miami for
+          treatment, send photos first and we'll tell you whether your case is suitable before you
+          book travel.
+        </p>
+      </div>
+
+      <div class="form-card">
+        {form.endpoint ? (
+          <form action={form.endpoint} method="post">
+            <h2>Request an appointment</h2>
+            <label>
+              Name
+              <input type="text" name="name" required autocomplete="name" />
+            </label>
+            <label>
+              Phone
+              <input type="tel" name="phone" required autocomplete="tel" />
+            </label>
+            <label>
+              Email
+              <input type="email" name="email" required autocomplete="email" />
+            </label>
+            <label>
+              What would you like to change about your smile?
+              <textarea name="message" rows="4"></textarea>
+            </label>
+            <fieldset>
+              <legend>Preferred language</legend>
+              <label class="inline"><input type="radio" name="language" value="English" checked /> English</label>
+              <label class="inline"><input type="radio" name="language" value="Spanish" /> Spanish</label>
+            </fieldset>
+            <button class="btn" type="submit">Request appointment</button>
+          </form>
+        ) : (
+          <div class="reach">
+            <h2>Reach us directly</h2>
+            <p>The fastest way to get a consultation on the calendar is a call or a message.</p>
+            <ul class="reach-list">
+              <li>{tel ? <a class="btn" href={tel}>Call {clinic.phone}</a> : <span>Call {clinic.phone}</span>}</li>
+              <li>{wa ? <a class="btn btn-quiet" href={wa}>WhatsApp {clinic.whatsapp}</a> : <span>WhatsApp {clinic.whatsapp}</span>}</li>
+              <li>{mail ? <a class="btn btn-quiet" href={mail}>Email {clinic.email}</a> : <span>Email {clinic.email}</span>}</li>
+            </ul>
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .form-card {
+    background: var(--mist);
+    border-radius: 1rem;
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+  }
+  .form-card h2 { margin-top: 0; }
+  form { display: grid; gap: 1.1rem; }
+  label { display: grid; gap: 0.35rem; font-weight: 500; }
+  input, textarea {
+    font: inherit;
+    padding: 0.7rem 0.8rem;
+    border: 1px solid var(--line);
+    border-radius: 0.5rem;
+    background: #fff;
+    color: inherit;
+    width: 100%;
+  }
+  fieldset { border: none; padding: 0; margin: 0; display: grid; gap: 0.4rem; }
+  legend { font-weight: 500; padding: 0; margin-bottom: 0.35rem; }
+  .inline { display: flex; align-items: center; gap: 0.5rem; font-weight: 400; }
+  .inline input { width: auto; }
+  button { border: none; cursor: pointer; font: inherit; font-weight: 600; justify-self: start; }
+  .reach-list { list-style: none; margin: 1.5rem 0 0; padding: 0; display: grid; gap: 0.8rem; justify-items: start; }
+</style>
