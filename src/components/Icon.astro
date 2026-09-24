@@ -1,0 +1,16 @@
+---
+// Inlines a Lucide icon at build time (lucide-static, ISC). pathLength="1" lets CSS
+// draw the strokes in (see .ico in Base.astro).
+import { readFileSync } from "node:fs";
+
+interface Props {
+  name: string;
+  tile?: boolean; // round tinted badge, for feature lists
+}
+const { name, tile = false } = Astro.props;
+const svg = readFileSync(`node_modules/lucide-static/icons/${name}.svg`, "utf8")
+  .replace(/<!--.*?-->/s, "")
+  .replace(/<(path|circle|line|rect|polyline|ellipse)\b/g, '<$1 pathLength="1"');
+---
+
+<span class:list={["ico", { tile }]} aria-hidden="true" set:html={svg} />

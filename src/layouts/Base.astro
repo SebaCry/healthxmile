@@ -1,5 +1,6 @@
 ---
 import { clinic, nav, pending } from "../site";
+import Icon from "../components/Icon.astro";
 
 interface Props {
   title: string;
@@ -64,6 +65,7 @@ const schema = {
       rel="stylesheet"
     />
     <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    <script is:inline>document.documentElement.classList.add("js");</script>
     <style is:global>
       :root {
         --ink: #0b2138;
@@ -123,7 +125,8 @@ const schema = {
       .site-nav a { color: var(--ink); text-decoration: none; font-size: 0.98rem; font-weight: 500; }
       .site-nav a:hover, .site-nav a[aria-current="page"] { color: var(--pink); }
       .btn {
-        display: inline-block; background: var(--pink); color: #fff; text-decoration: none;
+        display: inline-flex; align-items: center; gap: 0.5rem; position: relative; overflow: hidden;
+        background: var(--pink); color: #fff; text-decoration: none;
         font-weight: 600; padding: 0.7rem 1.3rem; border-radius: 999px; white-space: nowrap;
       }
       .btn:hover { background: #c81d73; }
@@ -188,6 +191,133 @@ const schema = {
       .foot-note { border-top: 1px solid #23415b; margin-top: 2.5rem; padding-top: 1.5rem;
         font-size: 0.9rem; color: #8fb0c6; }
 
+      /* ---------- Icons (inline Lucide, see components/Icon.astro) ---------- */
+      .ico { display: inline-grid; place-items: center; flex: none; }
+      .ico svg { width: 1.25em; height: 1.25em; stroke-width: 1.75; }
+      .ico.tile {
+        --c: var(--cyan); --bg: var(--mist);
+        width: 3.1rem; height: 3.1rem; border-radius: 50%; background: var(--bg); color: var(--c);
+        transition: background-color 0.3s, color 0.3s;
+      }
+      .ico.tile svg { width: 1.45rem; height: 1.45rem; }
+      .has-ico { display: grid; grid-template-columns: auto 1fr; column-gap: 1.2rem; align-items: start; }
+      .has-ico > .ico { grid-row: 1 / span 4; }
+      .has-ico > :not(.ico) { grid-column: 2; }
+      .has-ico:nth-child(even) > .tile { --c: var(--pink); --bg: var(--blush); }
+      .has-ico:hover > .tile { background: var(--c); color: #fff; animation: wiggle 0.5s ease-in-out; }
+      @keyframes wiggle { 30% { rotate: -12deg; } 70% { rotate: 12deg; } }
+      .line { display: flex; align-items: flex-start; gap: 0.8rem; margin-bottom: 0.8rem; }
+      .line .ico { color: var(--pink); margin-top: 0.22em; }
+      .site-foot .line .ico { color: var(--cyan); }
+      .prose h3 .ico, .site-foot h3 .ico { vertical-align: -0.2em; margin-right: 0.45rem; color: var(--cyan); }
+
+      /* Check-mark bullets */
+      .prose ul { list-style: none; padding-left: 0; }
+      .prose ul li { position: relative; padding-left: 1.8rem; }
+      .prose ul li::before {
+        content: ""; position: absolute; left: 0; top: 0.32em; width: 1.1em; height: 1.1em; background: var(--cyan);
+        --check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+        -webkit-mask: var(--check) center / contain no-repeat; mask: var(--check) center / contain no-repeat;
+      }
+
+      /* ---------- Buttons ---------- */
+      .btn { transition: background-color 0.2s, transform 0.25s, box-shadow 0.25s, border-color 0.2s; }
+      .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 22px -8px rgba(232, 46, 137, 0.6); }
+      .btn:active { transform: none; }
+      .btn-quiet:hover { box-shadow: 0 10px 22px -10px rgba(69, 193, 238, 0.8); }
+      .btn::before { /* shine sweep */
+        content: ""; position: absolute; inset: 0; pointer-events: none; translate: -110% 0;
+        background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.4) 50%, transparent 70%);
+        transition: translate 0.7s;
+      }
+      .btn-quiet::before { display: none; }
+      .btn:hover::before { translate: 110% 0; }
+      .btn::after { /* arrow */
+        content: ""; width: 1.05em; height: 1.05em; background: currentColor;
+        --arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M12 5l7 7-7 7'/%3E%3C/svg%3E");
+        -webkit-mask: var(--arrow) center / contain no-repeat; mask: var(--arrow) center / contain no-repeat;
+        transition: transform 0.25s;
+      }
+      .btn:hover::after { transform: translateX(4px); }
+      .reach-list .btn::after, .btn:has(.ico)::after { display: none; }
+
+      /* ---------- Header ---------- */
+      .site-head { transition: box-shadow 0.3s; }
+      .site-head .shell { transition: height 0.3s; }
+      .site-head.stuck { box-shadow: 0 8px 24px -16px rgba(11, 33, 56, 0.45); }
+      .site-head.stuck .shell { height: 3.75rem; }
+      .site-nav a, .menu-list a, .site-foot a { transition: color 0.2s; }
+      .site-nav a {
+        background: linear-gradient(var(--pink), var(--pink)) 0 100% / 0 2px no-repeat;
+        transition: color 0.2s, background-size 0.3s; padding-bottom: 2px;
+      }
+      .site-nav a:hover, .site-nav a[aria-current="page"] { background-size: 100% 2px; }
+      @supports (animation-timeline: scroll()) { /* reading-progress bar, Chromium/Safari */
+        .site-head::after {
+          content: ""; position: absolute; inset: auto 0 -1px; height: 3px; transform-origin: 0 50%;
+          background: linear-gradient(90deg, var(--cyan), var(--pink));
+          animation-name: grow; animation-timing-function: linear; animation-fill-mode: both;
+          animation-timeline: scroll(root); /* longhands: the minifier would merge them into a shorthand older Chrome drops */
+        }
+        @keyframes grow { from { transform: scaleX(0); } }
+      }
+
+      /* ---------- Small hovers ---------- */
+      .steps li::before { transition: background-color 0.3s, color 0.3s, transform 0.3s; }
+      .steps li:hover::before { background: var(--cyan); color: #fff; transform: scale(1.12); }
+      details summary::after { transition: transform 0.25s; }
+      details[open] summary::after { transform: rotate(180deg); }
+      details[open] p { animation: fade-down 0.3s ease-out; }
+      @keyframes fade-down { from { opacity: 0; transform: translateY(-0.4rem); } }
+      .band h2::after { /* accent bar that draws in */
+        content: ""; display: block; width: 3rem; height: 3px; margin-top: 0.7rem; border-radius: 3px;
+        background: linear-gradient(90deg, var(--pink), var(--cyan)); transform-origin: 0 50%;
+        transition: transform 0.7s cubic-bezier(0.22, 0.75, 0.3, 1) 0.3s;
+      }
+      .js .band h2.rv:not(.in)::after { transform: scaleX(0); }
+      .cta-band h2::after { display: none; }
+
+      /* ---------- Hero ---------- */
+      :is(.hero, .page-hero) { position: relative; isolation: isolate; overflow-x: clip; }
+      :is(.hero, .page-hero)::before, :is(.hero, .page-hero)::after { /* drifting colour glows */
+        content: ""; position: absolute; z-index: -1; width: min(38rem, 80vw); aspect-ratio: 1; border-radius: 50%;
+        pointer-events: none; animation: drift 14s ease-in-out infinite alternate;
+      }
+      :is(.hero, .page-hero)::before { right: -12%; top: -25%; background: radial-gradient(closest-side, rgba(69, 193, 238, 0.22), transparent); }
+      :is(.hero, .page-hero)::after { left: -18%; bottom: -30%; background: radial-gradient(closest-side, rgba(232, 46, 137, 0.13), transparent); animation-delay: -7s; }
+      @keyframes drift { to { translate: 3rem 2rem; scale: 1.15; } }
+      @keyframes rise-in { from { opacity: 0; transform: translateY(1.5rem); } }
+      :is(.hero, .page-hero) :is(.lede, .actions, .hero-meta) {
+        animation: rise-in 0.8s cubic-bezier(0.22, 0.75, 0.3, 1) both;
+      }
+      :is(.hero, .page-hero) .lede { animation-delay: 0.5s; }
+      :is(.hero, .page-hero) .actions { animation-delay: 0.65s; }
+      :is(.hero, .page-hero) .hero-meta { animation-delay: 0.8s; }
+      .w { display: inline-block; animation: word-in 0.9s cubic-bezier(0.22, 0.75, 0.3, 1) both; animation-delay: calc(var(--i) * 70ms + 80ms); }
+      @keyframes word-in { from { opacity: 0; transform: translateY(0.6em) rotate(3deg); filter: blur(6px); } }
+      .page-hero img { animation: clip-up 1.1s cubic-bezier(0.22, 0.75, 0.3, 1) 0.2s both; }
+      @keyframes clip-up { from { clip-path: inset(100% 0 0 0); } to { clip-path: inset(0); } }
+
+      /* ---------- Scroll reveal (JS adds .rv / .in) ---------- */
+      .js .rv {
+        opacity: 0; translate: var(--x, 0) var(--y, 1.5rem); scale: var(--s, 1);
+        transition: opacity 0.8s ease-out var(--d, 0s), translate 0.8s cubic-bezier(0.22, 0.75, 0.3, 1) var(--d, 0s),
+          scale 0.8s cubic-bezier(0.22, 0.75, 0.3, 1) var(--d, 0s), clip-path 1.1s cubic-bezier(0.22, 0.75, 0.3, 1) var(--d, 0s);
+      }
+      .js .rv.in { opacity: 1; translate: none; scale: 1; }
+      .rv-l { --x: -2rem; --y: 0; }
+      .rv-z { --y: 0.8rem; --s: 0.9; }
+      .js .rv-clip { --y: 0; clip-path: inset(0 0 100% 0); }
+      .js .rv-clip.in { clip-path: inset(0); }
+      /* icons draw themselves, tiles pop, check marks stamp in */
+      .ico svg :is(path, circle, line, rect, polyline, ellipse) { stroke-dasharray: 1 1.5; stroke-dashoffset: 0; }
+      .js .rv:not(.in) .ico svg :is(path, circle, line, rect, polyline, ellipse) { stroke-dashoffset: 1.5; }
+      .js .rv .ico svg :is(path, circle, line, rect, polyline, ellipse) { transition: stroke-dashoffset 1.1s ease-out calc(var(--d, 0s) + 0.35s); }
+      .js .rv:not(.in) .tile { scale: 0.4; rotate: -25deg; }
+      .js .rv .tile { transition: scale 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--d, 0s) + 0.2s), rotate 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--d, 0s) + 0.2s), background-color 0.3s, color 0.3s; }
+      .js .prose ul.rv:not(.in) li::before { scale: 0; }
+      .prose ul li::before { transition: scale 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--i, 0) * 0.07s + 0.3s); }
+
       @media (max-width: 860px) {
         .site-nav, .head-cta { display: none; }
       }
@@ -197,6 +327,10 @@ const schema = {
       @media (prefers-reduced-motion: reduce) {
         html { scroll-behavior: auto; }
         * { animation: none !important; transition: none !important; }
+        .js .rv { opacity: 1 !important; translate: none !important; scale: 1 !important; clip-path: none !important; }
+        .js .rv .tile, .js .prose ul.rv li::before { scale: 1 !important; rotate: 0deg !important; }
+        .ico svg :is(path, circle, line, rect, polyline, ellipse) { stroke-dashoffset: 0 !important; }
+        .js .band h2.rv::after { transform: none !important; }
       }
     </style>
   </head>
@@ -233,15 +367,13 @@ const schema = {
           </div>
           <div>
             <h3>Visit us</h3>
-            <p>{address}</p>
-            <p>
-              {tel ? <a href={tel}>{clinic.phone}</a> : clinic.phone}<br />
-              WhatsApp {clinic.whatsapp}<br />
-              {clinic.email}
-            </p>
+            <p class="line"><Icon name="map-pin" /><span>{address}</span></p>
+            <p class="line"><Icon name="phone" /><span>{tel ? <a href={tel}>{clinic.phone}</a> : clinic.phone}</span></p>
+            <p class="line"><Icon name="message-circle" /><span>WhatsApp {clinic.whatsapp}</span></p>
+            <p class="line"><Icon name="mail" /><span>{clinic.email}</span></p>
           </div>
           <div>
-            <h3>Hours</h3>
+            <h3><Icon name="clock" />Hours</h3>
             <ul>
               {clinic.hours.map(([day, time]) => <li>{day}: {time}</li>)}
             </ul>
@@ -259,5 +391,35 @@ const schema = {
         </p>
       </div>
     </footer>
+
+    <script is:inline>
+      // Hero headline: animate word by word.
+      document.querySelectorAll(".hero h1, .page-hero h1").forEach((h) => {
+        h.innerHTML = h.textContent.trim().split(/\s+/).map((w, i) => `<span class="w" style="--i:${i}">${w}</span>`).join(" ");
+      });
+
+      // Header gets a shadow once the page scrolls.
+      const head = document.querySelector(".site-head");
+      addEventListener("scroll", () => head.classList.toggle("stuck", scrollY > 8), { passive: true });
+
+      // Scroll reveal: tag blocks, fade them in once as they enter the viewport, stagger siblings.
+      const io = new IntersectionObserver((entries) => {
+        for (const e of entries) if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+      }, { threshold: 0.12, rootMargin: "0px 0px -6% 0px" });
+      const groups = [
+        ["", ".band h2, .band > .shell > .lede, .rule-list li, .reasons > div, .prose > *, .cta-band .actions, details, .table-scroll, .foot-grid > div, .split > .form-card, .reach"],
+        ["rv-l", ".steps li"],
+        ["rv-z", ".facts > div"],
+        ["rv-clip", ".split img, .process-img"],
+      ];
+      for (const [variant, sel] of groups) {
+        document.querySelectorAll(sel).forEach((el) => {
+          el.classList.add("rv", ...(variant ? [variant] : []));
+          el.style.setProperty("--d", Math.min([...el.parentNode.children].indexOf(el), 4) * 0.08 + "s");
+          io.observe(el);
+        });
+      }
+      document.querySelectorAll(".prose li").forEach((li) => li.style.setProperty("--i", [...li.parentNode.children].indexOf(li)));
+    </script>
   </body>
 </html>

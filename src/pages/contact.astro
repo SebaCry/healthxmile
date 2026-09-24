@@ -1,6 +1,7 @@
 ---
 import Base from "../layouts/Base.astro";
 import PageHero from "../components/PageHero.astro";
+import Icon from "../components/Icon.astro";
 import { clinic, form, pending } from "../site";
 
 const tel = pending(clinic.phone) ? null : `tel:${clinic.phone.replace(/[^+\d]/g, "")}`;
@@ -26,17 +27,12 @@ const mail = pending(clinic.email) ? null : `mailto:${clinic.email}`;
     <div class="shell split">
       <div class="prose">
         <h2>Visit us</h2>
-        <p>
-          {clinic.street}<br />
-          {clinic.city}, {clinic.region} {clinic.zip}
-        </p>
-        <p>
-          Phone: {tel ? <a href={tel}>{clinic.phone}</a> : clinic.phone}<br />
-          WhatsApp: {wa ? <a href={wa}>{clinic.whatsapp}</a> : clinic.whatsapp}<br />
-          Email: {mail ? <a href={mail}>{clinic.email}</a> : clinic.email}
-        </p>
+        <p class="line"><Icon name="map-pin" /><span>{clinic.street}<br />{clinic.city}, {clinic.region} {clinic.zip}</span></p>
+        <p class="line"><Icon name="phone" /><span>Phone: {tel ? <a href={tel}>{clinic.phone}</a> : clinic.phone}</span></p>
+        <p class="line"><Icon name="message-circle" /><span>WhatsApp: {wa ? <a href={wa}>{clinic.whatsapp}</a> : clinic.whatsapp}</span></p>
+        <p class="line"><Icon name="mail" /><span>Email: {mail ? <a href={mail}>{clinic.email}</a> : clinic.email}</span></p>
 
-        <h3>Hours</h3>
+        <h3><Icon name="clock" />Hours</h3>
         <table>
           <tbody>
             {clinic.hours.map(([day, time]) => (
@@ -87,9 +83,9 @@ const mail = pending(clinic.email) ? null : `mailto:${clinic.email}`;
             <h2>Reach us directly</h2>
             <p>The fastest way to get a consultation on the calendar is a call or a message.</p>
             <ul class="reach-list">
-              <li>{tel ? <a class="btn" href={tel}>Call {clinic.phone}</a> : <span>Call {clinic.phone}</span>}</li>
-              <li>{wa ? <a class="btn btn-quiet" href={wa}>WhatsApp {clinic.whatsapp}</a> : <span>WhatsApp {clinic.whatsapp}</span>}</li>
-              <li>{mail ? <a class="btn btn-quiet" href={mail}>Email {clinic.email}</a> : <span>Email {clinic.email}</span>}</li>
+              <li>{tel ? <a class="btn" href={tel}><Icon name="phone" />Call {clinic.phone}</a> : <span>Call {clinic.phone}</span>}</li>
+              <li>{wa ? <a class="btn btn-quiet" href={wa}><Icon name="message-circle" />WhatsApp {clinic.whatsapp}</a> : <span>WhatsApp {clinic.whatsapp}</span>}</li>
+              <li>{mail ? <a class="btn btn-quiet" href={mail}><Icon name="mail" />Email {clinic.email}</a> : <span>Email {clinic.email}</span>}</li>
             </ul>
           </div>
         )}

@@ -1,13 +1,14 @@
 ---
 import Base from "../layouts/Base.astro";
 import Faq from "../components/Faq.astro";
+import Icon from "../components/Icon.astro";
 import { clinic, price } from "../site";
 
 const facts = [
-  ["Smiles designed in Miami", "[N]"],
-  ["Digital preview", "Before treatment begins"],
-  ["Lab fees", "Included, never added later"],
-  ["Payment plans", `From ${price.monthly} a month`],
+  ["Smiles designed in Miami", "[N]", "smile"],
+  ["Digital preview", "Before treatment begins", "scan-face"],
+  ["Lab fees", "Included, never added later", "receipt"],
+  ["Payment plans", `From ${price.monthly} a month`, "wallet"],
 ];
 
 const faq: [string, string][] = [
@@ -48,11 +49,11 @@ const faq: [string, string][] = [
           <a class="btn" href="/contact">Book your consultation</a>
           <a class="btn btn-quiet" href="/smile-design">See how it works</a>
         </div>
-        <p class="hero-meta">
-          English and Spanish spoken<br />
-          {clinic.street}, {clinic.city}, {clinic.region} {clinic.zip}<br />
-          {clinic.phone}
-        </p>
+        <div class="hero-meta">
+          <p class="line"><Icon name="languages" />English and Spanish spoken</p>
+          <p class="line"><Icon name="map-pin" />{clinic.street}, {clinic.city}, {clinic.region} {clinic.zip}</p>
+          <p class="line"><Icon name="phone" />{clinic.phone}</p>
+        </div>
       </div>
       <figure class="arch">
         <img
@@ -62,6 +63,8 @@ const faq: [string, string][] = [
           alt="Close-up of a patient smiling after veneer treatment"
           fetchpriority="high"
         />
+        <span class="badge b1" aria-hidden="true"><Icon name="sparkles" /></span>
+        <span class="badge b2" aria-hidden="true"><Icon name="smile" /></span>
       </figure>
     </div>
   </section>
@@ -69,8 +72,9 @@ const faq: [string, string][] = [
   <section class="band facts-band">
     <div class="shell">
       <dl class="facts">
-        {facts.map(([label, value]) => (
-          <div>
+        {facts.map(([label, value, icon]) => (
+          <div class="has-ico">
+            <Icon name={icon} tile />
             <dt>{label}</dt>
             <dd>{value}</dd>
           </div>
@@ -88,7 +92,8 @@ const faq: [string, string][] = [
         That focus is why our cases look natural.
       </p>
       <ul class="rule-list services">
-        <li>
+        <li class="has-ico">
+          <Icon name="gem" tile />
           <h3>Porcelain veneers</h3>
           <p>
             Thin ceramic shells that correct shape, color and apparent position. Stain
@@ -97,7 +102,8 @@ const faq: [string, string][] = [
           </p>
           <a href="/porcelain-veneers-miami">Porcelain veneers</a>
         </li>
-        <li>
+        <li class="has-ico">
+          <Icon name="paintbrush" tile />
           <h3>Composite veneers</h3>
           <p>
             Sculpted directly onto the tooth in a single visit. Lower cost, often reversible,
@@ -106,7 +112,8 @@ const faq: [string, string][] = [
           </p>
           <a href="/composite-veneers-miami">Composite veneers</a>
         </li>
-        <li>
+        <li class="has-ico">
+          <Icon name="sparkles" tile />
           <h3>Smile design</h3>
           <p>
             The full plan: facial analysis, photography, digital preview and a trial smile in
@@ -154,19 +161,23 @@ const faq: [string, string][] = [
     <div class="shell">
       <h2>Why patients choose us</h2>
       <div class="reasons">
-        <div>
+        <div class="has-ico">
+          <Icon name="shield-check" tile />
           <h3>We say no when no is the right answer</h3>
           <p>If your teeth need something else before veneers, we tell you. A veneer over an unresolved problem is money wasted.</p>
         </div>
-        <div>
+        <div class="has-ico">
+          <Icon name="eye" tile />
           <h3>You see it before you commit</h3>
           <p>The digital preview isn't an upsell. It's part of the process, and it's included in the consultation.</p>
         </div>
-        <div>
+        <div class="has-ico">
+          <Icon name="badge-dollar-sign" tile />
           <h3>Fixed pricing</h3>
           <p>The estimate you sign is what you pay. Diagnosis, design, temporaries and follow-ups are in the price.</p>
         </div>
-        <div>
+        <div class="has-ico">
+          <Icon name="languages" tile />
           <h3>Fully bilingual</h3>
           <p>Consultation, treatment plan and follow-up in English or Spanish, whichever you prefer.</p>
         </div>
@@ -202,7 +213,8 @@ const faq: [string, string][] = [
   @media (min-width: 900px) {
     .hero-grid { grid-template-columns: 1.05fr 0.95fr; }
   }
-  .hero-meta { margin-top: 2rem; color: var(--ink-soft); font-size: 0.98rem; line-height: 1.8; }
+  .hero-meta { margin-top: 2rem; color: var(--ink-soft); font-size: 0.98rem; }
+  .hero-meta .line { margin-bottom: 0.4rem; }
 
   .arch { margin: 0; position: relative; }
   .arch::before {
@@ -221,11 +233,19 @@ const faq: [string, string][] = [
     max-height: min(68vh, 34rem);
     object-fit: cover;
     object-position: 50% 62%;
-    animation: rise 0.9s cubic-bezier(0.22, 0.75, 0.3, 1) both;
+    animation: clip-up 1.3s cubic-bezier(0.22, 0.75, 0.3, 1) 0.15s both;
   }
-  @keyframes rise {
-    from { opacity: 0; transform: translateY(2rem); }
+  .arch::before { animation: outline-in 1.2s cubic-bezier(0.22, 0.75, 0.3, 1) 0.5s both, float 7s ease-in-out 1.7s infinite; }
+  @keyframes outline-in { from { opacity: 0; scale: 0.88; } }
+  @keyframes float { 50% { translate: 0 -0.7rem; } }
+  .badge {
+    position: absolute; z-index: 1; display: grid; place-items: center; border-radius: 50%; color: #fff;
+    animation: pop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both, float 5s ease-in-out infinite;
   }
+  .badge :global(svg) { width: 55%; height: 55%; }
+  .b1 { width: 3.8rem; height: 3.8rem; right: -1rem; top: 14%; background: var(--pink); box-shadow: 0 12px 26px -8px rgba(232, 46, 137, 0.6); animation-delay: 1s, 1.8s; }
+  .b2 { width: 3rem; height: 3rem; left: -1rem; bottom: 16%; background: var(--cyan); box-shadow: 0 12px 26px -8px rgba(69, 193, 238, 0.7); animation-delay: 1.2s, 2.6s; }
+  @keyframes pop { from { opacity: 0; scale: 0; } }
 
   .facts-band { background: var(--blush); border-top: none; }
   .facts {
@@ -234,6 +254,7 @@ const faq: [string, string][] = [
     gap: 1.8rem;
     grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
   }
+  :global(.facts .has-ico:nth-child(n) > .tile) { --bg: #fff; } /* Icon's markup carries no scope attribute */
   .facts dt { color: var(--ink-soft); font-size: 0.95rem; }
   .facts dd {
     margin: 0.2rem 0 0;

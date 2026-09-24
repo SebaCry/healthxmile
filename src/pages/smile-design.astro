@@ -2,6 +2,7 @@
 import Base from "../layouts/Base.astro";
 import PageHero from "../components/PageHero.astro";
 import Faq from "../components/Faq.astro";
+import Icon from "../components/Icon.astro";
 import { price } from "../site";
 
 const faq: [string, string][] = [
@@ -40,7 +41,8 @@ const faq: [string, string][] = [
     <div class="shell">
       <h2>What we analyze</h2>
       <ul class="rule-list analysis">
-        <li>
+        <li class="has-ico">
+          <Icon name="scan-face" tile />
           <h3>Your face, not just your teeth</h3>
           <p>
             The line of your eyes, the width of your smile, how your upper lip falls when you
@@ -48,21 +50,24 @@ const faq: [string, string][] = [
             look wrong on a face.
           </p>
         </li>
-        <li>
+        <li class="has-ico">
+          <Icon name="ruler" tile />
           <h3>Your proportions</h3>
           <p>
             Width-to-height ratio of each tooth, the progression of the laterals, the position of
             the midline.
           </p>
         </li>
-        <li>
+        <li class="has-ico">
+          <Icon name="activity" tile />
           <h3>Your function</h3>
           <p>
             How you close, where you load, whether you clench at night. A smile that looks good
             and fractures within a year is no result at all.
           </p>
         </li>
-        <li>
+        <li class="has-ico">
+          <Icon name="user-round" tile />
           <h3>Your age and personality</h3>
           <p>
             Perfectly straight, very white edges on a 55-year-old look installed. Natural has
