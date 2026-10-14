@@ -1,4 +1,6 @@
 ---
+import Icon from "./Icon.astro";
+
 interface Props {
   items: [string, string][];
   heading?: string;
@@ -16,51 +18,64 @@ const schema = {
 };
 ---
 
-<section class="band">
-  <div class="shell faq">
-    <h2>{heading}</h2>
-    <div>
-      {items.map(([q, a]) => (
-        <details>
-          <summary>{q}</summary>
-          <p>{a}</p>
-        </details>
-      ))}
-    </div>
+<section class="faq pad">
+  <h2 class="h-xl">{heading}</h2>
+  <div>
+    {items.map(([q, a]) => (
+      <details>
+        <summary>{q}<span class="x"><Icon name="plus" /></span></summary>
+        <p>{a}</p>
+      </details>
+    ))}
   </div>
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
 </section>
 
 <style>
   .faq {
+    padding-block: clamp(80px, 10vw, 140px);
     display: grid;
-    gap: 2rem clamp(2rem, 6vw, 5rem);
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+    gap: 48px;
+    max-width: 1432px;
   }
-  @media (min-width: 900px) {
-    .faq { grid-template-columns: 20rem minmax(0, 1fr); }
-    .faq h2 { position: sticky; top: 6rem; }
-  }
-  details {
-    border-top: 1px solid var(--line);
-    padding: 1.1rem 0;
-  }
+  details { border-top: 1px solid var(--line); }
   details:last-of-type { border-bottom: 1px solid var(--line); }
   summary {
-    cursor: pointer;
-    font-weight: 600;
     list-style: none;
     display: flex;
     justify-content: space-between;
-    gap: 1.5rem;
+    align-items: center;
+    gap: 20px;
+    padding: 28px 0;
+    cursor: pointer;
+    font: 600 clamp(22px, 2.2vw, 30px)/1.1 var(--display);
+    letter-spacing: -0.02em;
   }
   summary::-webkit-details-marker { display: none; }
-  summary::after {
-    content: "+";
+  .x {
+    flex: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    display: grid;
+    place-items: center;
     color: var(--cyan);
-    font-size: 1.4rem;
-    line-height: 1;
+    transition: transform 0.4s;
   }
-  details[open] summary::after { content: "–"; }
-  details p { margin: 0.8rem 0 0; color: var(--ink-soft); }
+  details[open] .x { transform: rotate(45deg); }
+  /* Smooth open where ::details-content is supported, instant elsewhere */
+  details::details-content {
+    block-size: 0;
+    overflow: hidden;
+    transition: block-size 0.5s var(--ease), content-visibility 0.5s allow-discrete;
+  }
+  details[open]::details-content { block-size: auto; }
+  p {
+    margin: 0 0 28px;
+    max-width: 560px;
+    font: 400 17px/1.6 var(--body);
+    color: rgba(255, 255, 255, 0.78);
+  }
 </style>

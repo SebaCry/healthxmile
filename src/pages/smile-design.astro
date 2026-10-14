@@ -5,6 +5,20 @@ import Faq from "../components/Faq.astro";
 import Icon from "../components/Icon.astro";
 import { price } from "../site";
 
+const steps = [
+  ["Consultation", "Face, lips, gum line, bite and what you want to change.", ""],
+  ["Scan & photos", "A digital scan and a set of facial photos.", ""],
+  ["Digital preview", "Your new smile on your own face. We adjust it together.", "pink"],
+  ["Placement", "Composite in one visit, porcelain 2–3 weeks later.", ""],
+];
+
+const analysis = [
+  ["scan-face", "Your face, not just your teeth", "The line of your eyes, the width of your smile, how your upper lip falls when you speak, how much gum shows when you really laugh. A smile that's correct on a model can look wrong on a face."],
+  ["ruler", "Your proportions", "Width-to-height ratio of each tooth, the progression of the laterals, the position of the midline."],
+  ["activity", "Your function", "How you close, where you load, whether you clench at night. A smile that looks good and fractures within a year is no result at all."],
+  ["user-round", "Your age and personality", "Perfectly straight, very white edges on a 55-year-old look installed. Natural has texture, translucency and a deliberate touch of asymmetry."],
+];
+
 const faq: [string, string][] = [
   [
     "Is smile design a treatment?",
@@ -31,97 +45,72 @@ const faq: [string, string][] = [
   path="/smile-design"
 >
   <PageHero
-    title="See it before you decide"
-    lede="Smile design isn't a treatment, it's the plan. It's what happens before we decide whether porcelain, composite or neither is right for you."
-    image="/img/hero-smile.webp"
-    alt="Patient smiling during a smile design consultation"
+    eyebrow="Smile design"
+    title='See it on your face <span class="cyan">before</span> we touch a tooth.'
+    lede="Every case starts as a digital design built from your scan and facial photos. You approve the preview, then we make it real in composite or porcelain."
   />
 
-  <section class="band">
-    <div class="shell">
-      <h2>What we analyze</h2>
-      <ul class="rule-list analysis">
-        <li class="has-ico">
-          <Icon name="scan-face" tile />
-          <h3>Your face, not just your teeth</h3>
-          <p>
-            The line of your eyes, the width of your smile, how your upper lip falls when you
-            speak, how much gum shows when you really laugh. A smile that's correct on a model can
-            look wrong on a face.
-          </p>
+  <section class="pad split steps-sec">
+    <img class="arch" src="/img/hero-smile.webp" width="900" height="1125" alt="Patient smiling during a smile design consultation" />
+    <ol class="olist">
+      {steps.map(([title, text, tone], i) => (
+        <li>
+          <span class:list={["n outline", tone]}>{String(i + 1).padStart(2, "0")}</span>
+          <div><h3 class="h-m">{title}</h3><p>{text}</p></div>
         </li>
-        <li class="has-ico">
-          <Icon name="ruler" tile />
-          <h3>Your proportions</h3>
-          <p>
-            Width-to-height ratio of each tooth, the progression of the laterals, the position of
-            the midline.
-          </p>
-        </li>
-        <li class="has-ico">
-          <Icon name="activity" tile />
-          <h3>Your function</h3>
-          <p>
-            How you close, where you load, whether you clench at night. A smile that looks good
-            and fractures within a year is no result at all.
-          </p>
-        </li>
-        <li class="has-ico">
-          <Icon name="user-round" tile />
-          <h3>Your age and personality</h3>
-          <p>
-            Perfectly straight, very white edges on a 55-year-old look installed. Natural has
-            texture, translucency and a deliberate touch of asymmetry.
-          </p>
-        </li>
-      </ul>
+      ))}
+    </ol>
+  </section>
+
+  <section class="sec pad">
+    <h2 class="h-xl">What we analyze</h2>
+    <div class="analysis wrap">
+      {analysis.map(([icon, title, text]) => (
+        <div>
+          <span class="tile"><Icon name={icon} /></span>
+          <h3 class="h-m">{title}</h3>
+          <p>{text}</p>
+        </div>
+      ))}
     </div>
   </section>
 
-  <section class="band">
-    <div class="shell split">
-      <div class="prose">
-        <h2>What you get</h2>
-        <ul>
-          <li>Professional photo set of your current smile</li>
-          <li>Digital preview on your own photographs</li>
-          <li>Trial smile in temporary material</li>
-          <li>Written treatment plan with options and pricing</li>
-          <li>Time to think about it</li>
-        </ul>
-        <p class="note">
-          Consultation with design: {price.consultation}, credited toward treatment if you go
-          ahead.
-        </p>
-      </div>
-      <img
-        src="/img/veneers-closeup.webp"
-        width="900"
-        height="1200"
-        alt="Close-up of a designed smile"
-        loading="lazy"
-      />
+  <section class="sec pad split center">
+    <div class="prose">
+      <h2>What you get</h2>
+      <ul>
+        <li>Professional photo set of your current smile</li>
+        <li>Digital preview on your own photographs</li>
+        <li>Trial smile in temporary material</li>
+        <li>Written treatment plan with options and pricing</li>
+        <li>Time to think about it</li>
+      </ul>
+      <p class="note">Consultation with design: {price.consultation}, credited toward treatment if you go ahead.</p>
     </div>
+    <img class="arch" src="/img/veneers-closeup.webp" width="900" height="1125" alt="Close-up of a designed smile" loading="lazy" />
   </section>
 
   <Faq items={faq} />
 
-  <section class="band cta-band">
-    <div class="shell">
-      <h2>Start with the plan</h2>
-      <p class="lede">
-        Exam, photographs and a preliminary preview. You leave knowing what's possible and what
-        it costs.
-      </p>
-      <div class="actions">
-        <a class="btn" href="/contact">Book your consultation</a>
-        <a class="btn btn-quiet" href="/veneers-cost-miami">See pricing</a>
-      </div>
+  <section class="cta">
+    <h2>Start with <span class="cyan">the plan</span></h2>
+    <p class="lede">Exam, photographs and a preliminary preview. You leave knowing what's possible and what it costs.</p>
+    <div class="actions">
+      <a class="btn" href="/contact">Book your consultation</a>
+      <a class="btn ghost" href="/veneers-cost-miami">See pricing</a>
     </div>
   </section>
 </Base>
 
 <style>
-  .analysis h3 { font-size: 1.15rem; }
-  .analysis p { margin: 0; color: var(--ink-soft); }
+  .steps-sec { padding-block: 40px clamp(80px, 10vw, 140px); }
+  .analysis { margin-top: 56px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 48px 32px; }
+  .analysis > div { display: flex; flex-direction: column; gap: 16px; }
+  .analysis p { font: 400 16px/1.55 var(--body); color: rgba(255, 255, 255, 0.75); }
+  .tile {
+    width: 64px; height: 64px; display: grid; place-items: center; color: var(--cyan);
+    border-radius: 999px 999px 18px 18px; border: 1px solid var(--line); background: rgba(69, 193, 238, 0.1);
+  }
+  .analysis > div:nth-child(even) .tile { color: var(--pink); background: rgba(232, 46, 137, 0.1); }
+  .tile :global(svg) { width: 26px; height: 26px; }
 </style>

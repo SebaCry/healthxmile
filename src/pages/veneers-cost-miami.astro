@@ -4,14 +4,6 @@ import PageHero from "../components/PageHero.astro";
 import Faq from "../components/Faq.astro";
 import { price } from "../site";
 
-const rows: [string, string][] = [
-  ["Composite veneer, per tooth", `from ${price.compositeTooth}`],
-  ["Porcelain veneer, per tooth", `from ${price.porcelainTooth}`],
-  ["Full composite case, 8 teeth", `from ${price.compositeCase}`],
-  ["Full porcelain case, 8 teeth", `from ${price.porcelainCase}`],
-  ["Consultation with digital design", `${price.consultation}, credited toward treatment`],
-];
-
 const faq: [string, string][] = [
   [
     "Does insurance cover veneers?",
@@ -38,63 +30,69 @@ const faq: [string, string][] = [
   path="/veneers-cost-miami"
 >
   <PageHero
-    title="How much do veneers cost in Miami?"
-    lede="We publish our pricing because you deserve to know what you're walking into before you book."
+    eyebrow="Veneers cost · Miami"
+    title="What veneers cost in Miami"
+    lede="Clear prices per tooth and per full case, published before you book. Lab fees are included."
+    glow="pink"
   />
 
-  <section class="band">
-    <div class="shell split">
-      <div>
-        <div class="table-scroll">
-          <table>
-            <tbody>
-              {rows.map(([label, value]) => (
-                <tr>
-                  <th scope="row">{label}</th>
-                  <td>{value}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <p class="note" style="margin-top:2rem">
-          Financing from {price.monthly} a month through {price.lender}. Approval takes minutes
-          and can be done online before your visit.
-        </p>
-      </div>
+  <section class="pad price-sec">
+    <div class="tbl wrap">
+      <table>
+        <thead>
+          <tr><th scope="col">Option</th><th scope="col">Per tooth</th><th scope="col">Full case, 8 teeth</th><th scope="col">Time</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Composite veneers</th><td class="big cyan">from {price.compositeTooth}</td><td class="big">from {price.compositeCase}</td><td>1 visit</td></tr>
+          <tr><th scope="row">Porcelain veneers</th><td class="big cyan">from {price.porcelainTooth}</td><td class="big">from {price.porcelainCase}</td><td>2–3 weeks</td></tr>
+          <tr><th scope="row">Consultation &amp; preview</th><td colspan="3" class="big">{price.consultation}<span class="credit">credited toward treatment</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
 
-      <div class="prose">
-        <h2>What's included</h2>
-        <p>
-          Diagnosis, photography, digital design, trial smile, temporaries, placement, bite
-          adjustment and follow-ups. We don't charge separately for design or lab work.
-        </p>
-        <h3>What can change the price</h3>
-        <p>
-          If there's decay, gum disease or a need for prior treatment, it's quoted separately and
-          disclosed before we begin. Never mid-treatment.
-        </p>
-        <h3>Insurance</h3>
-        <p>
-          Most dental plans don't cover purely cosmetic treatment. If part of your case is
-          restorative, partial coverage may apply. We verify your benefits at no charge.
-        </p>
-      </div>
+  <section class="pad split center fin">
+    <div class="arch-card">
+      <p class="eyebrow">Financing</p>
+      <p class="monthly">{price.monthly}<span>/month</span></p>
+      <p class="lede">Payment plans through {price.lender}. Approval takes minutes and can be done online before your visit.</p>
+    </div>
+    <div class="quote">
+      <h2 class="h-l">Your exact quote comes with your preview.</h2>
+      <a class="btn" href="/contact">Book your consultation</a>
+    </div>
+  </section>
+
+  <section class="sec pad split">
+    <div class="prose">
+      <h2>What's included</h2>
+      <p>
+        Diagnosis, photography, digital design, trial smile, temporaries, placement, bite adjustment
+        and follow-ups. We don't charge separately for design or lab work.
+      </p>
+    </div>
+    <div class="prose">
+      <h3>What can change the price</h3>
+      <p>
+        If there's decay, gum disease or a need for prior treatment, it's quoted separately and
+        disclosed before we begin. Never mid-treatment.
+      </p>
+      <h3>Insurance</h3>
+      <p>
+        Most dental plans don't cover purely cosmetic treatment. If part of your case is restorative,
+        partial coverage may apply. We verify your benefits at no charge.
+      </p>
     </div>
   </section>
 
   <Faq items={faq} />
-
-  <section class="band cta-band">
-    <div class="shell">
-      <h2>Get your case quoted in writing</h2>
-      <p class="lede">
-        The estimate you sign is what you pay. Book a consultation and leave with a written plan.
-      </p>
-      <div class="actions">
-        <a class="btn" href="/contact">Book your consultation</a>
-        <a class="btn btn-quiet" href="/porcelain-veneers-miami">Porcelain veneers</a>
-      </div>
-    </div>
-  </section>
 </Base>
+
+<style>
+  .price-sec { padding-block: 20px 60px; }
+  .credit { display: block; margin-top: 8px; font: 400 15px/1.4 var(--body); color: var(--muted); }
+  .fin { padding-block: 20px clamp(60px, 8vw, 110px); }
+  .monthly { font: 800 clamp(56px, 6vw, 96px)/0.85 var(--display); letter-spacing: -0.05em; font-stretch: 78%; }
+  .monthly span { font-size: 0.4em; font-weight: 500; letter-spacing: -0.02em; }
+  .quote { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; }
+</style>

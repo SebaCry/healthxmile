@@ -17,9 +17,26 @@ export const clinic = {
     ["Sunday", "Closed"],
   ],
   dentist: "Dr. [Name]",
+  smiles: "[N]",
   instagram: "",
   facebook: "",
 };
+
+// Home page before/after slider. Real patient photos only, same framing, in public/img.
+// The section stays hidden while "before" is in brackets.
+export const beforeAfter = {
+  before: "[/img/before.webp]",
+  after: "/img/hero-smile.webp",
+};
+
+export const testimonials = [
+  { quote: "[Patient quote]", name: "[First name]", treatment: "Porcelain, 8 teeth" },
+  { quote: "[Patient quote]", name: "[First name]", treatment: "Composite, 6 teeth" },
+  { quote: "[Patient quote]", name: "[First name]", treatment: "Porcelain, 10 teeth" },
+  { quote: "[Patient quote]", name: "[First name]", treatment: "Composite, 4 teeth" },
+  { quote: "[Patient quote]", name: "[First name]", treatment: "Porcelain, 6 teeth" },
+  { quote: "[Patient quote]", name: "[First name]", treatment: "Composite, 8 teeth" },
+];
 
 export const price = {
   compositeTooth: "$[X]",

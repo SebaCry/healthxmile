@@ -2,13 +2,45 @@
 import Base from "../layouts/Base.astro";
 import Faq from "../components/Faq.astro";
 import Icon from "../components/Icon.astro";
-import { clinic, price } from "../site";
+import { clinic, price, beforeAfter, testimonials, pending } from "../site";
+
+const tel = pending(clinic.phone) ? undefined : `tel:${clinic.phone.replace(/[^+\d]/g, "")}`;
+const address = `${clinic.street}, ${clinic.city}, ${clinic.region} ${clinic.zip}`;
+const directions = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${clinic.name}, ${address}`)}`;
+
+// Headline, word by word: "c" = cyan, "l" = light weight
+const headline: [string, string?][] = [
+  ["A"], ["smile"], ["designed"], ["for"], ["your", "c"], ["face,", "c"], ["not", "l"], ["from", "l"], ["a", "l"], ["catalog", "l"],
+];
+
+// Scroll story over the 3D hero: [visible from,to of the hero scroll], number, label, line
+const story: [string, string, string, string][] = [
+  [".09,.22", "01", "Before", "Stained, worn, uneven."],
+  [".24,.42", "02", "Design", "0.5 mm of porcelain, shaped for you."],
+  [".47,.8", "03", "Tooth by tooth", "Drawn to your face."],
+  [".88,1", "04", "After", clinic.tagline],
+];
 
 const facts = [
-  ["Smiles designed in Miami", "[N]", "smile"],
-  ["Digital preview", "Before treatment begins", "scan-face"],
-  ["Lab fees", "Included, never added later", "receipt"],
-  ["Payment plans", `From ${price.monthly} a month`, "wallet"],
+  [`${clinic.smiles}+`, "Smiles designed in Miami", "cyan"],
+  ["100%", "Digital preview before treatment begins", ""],
+  ["$0", "Extra lab fees. Lab fees included", ""],
+  [price.monthly, "Payment plans from, per month", "pink"],
+];
+
+const process = [
+  ["office.webp", "Consultation", "We study your face, lips, gum line and bite, and listen to what you want to change.", ""],
+  ["dentist-at-work.webp", "Scan & photos", "A digital scan of your teeth and a set of facial photos. Everything we design starts here.", ""],
+  ["veneers-closeup.webp", "Digital preview", "You see the new smile on your own face before treatment begins, and we adjust it with you.", "pink"],
+  ["patient-laugh.webp", "Placement", "Composite is sculpted in one visit. Porcelain is bonded 2–3 weeks later, once the lab finishes your veneers.", ""],
+];
+
+// Loupe crops of the close-up: background position, title, text
+const craft = [
+  ["46% 42%", "Surface texture", "Natural enamel has fine ridges that catch light. We keep them."],
+  ["50% 62%", "Translucent edge", "The biting edge lets light through, the way a real tooth does."],
+  ["30% 50%", "Intentional asymmetry", "No two teeth are mirror copies. Small differences read as yours."],
+  ["70% 46%", "Shade chosen for you", "Picked against your skin, eyes and age. Not the whitest on the chart."],
 ];
 
 const faq: [string, string][] = [
@@ -36,254 +68,350 @@ const faq: [string, string][] = [
   description="Custom porcelain and composite veneers in Miami. See a digital preview of your new smile before we touch a single tooth. Transparent pricing. Book a consultation."
   path="/"
 >
-  <section class="hero">
-    <div class="shell hero-grid">
-      <div>
-        <h1>A smile designed for your face, not from a catalog</h1>
-        <p class="lede">
-          We don't work from a template. We study your proportions, your bite and the way your
-          lip moves when you talk, then design porcelain or composite veneers that still look
-          like you.
-        </p>
+  <section class="hero" data-track>
+    <div class="stage" data-stage>
+      <canvas data-hero="side"></canvas>
+      <div class="flash" data-flash></div>
+      <div class="load" data-load><span data-load-pct>0%</span><span>LOADING SMILE</span></div>
+      <div class="intro" data-fx="0,.08">
+        <p class="eyebrow" data-rise>Smile design studio · Miami</p>
+        <h1>
+          {headline.map(([w, c]) => <><span data-word class={c}>{w}</span>{" "}</>)}
+        </h1>
         <div class="actions">
-          <a class="btn" href="/contact">Book your consultation</a>
-          <a class="btn btn-quiet" href="/smile-design">See how it works</a>
-        </div>
-        <div class="hero-meta">
-          <p class="line"><Icon name="languages" />English and Spanish spoken</p>
-          <p class="line"><Icon name="map-pin" />{clinic.street}, {clinic.city}, {clinic.region} {clinic.zip}</p>
-          <p class="line"><Icon name="phone" />{clinic.phone}</p>
+          <a class="btn" href="/contact" data-rise>Book your consultation</a>
+          <a class="btn ghost" href="/smile-design" data-rise>See how it works</a>
         </div>
       </div>
-      <figure class="arch">
-        <img
-          src="/img/hero-smile.webp"
-          width="1000"
-          height="1500"
-          alt="Close-up of a patient smiling after veneer treatment"
-          fetchpriority="high"
-        />
-        <span class="badge b1" aria-hidden="true"><Icon name="sparkles" /></span>
-        <span class="badge b2" aria-hidden="true"><Icon name="smile" /></span>
-      </figure>
+      {story.map(([fx, n, label, line], i) => (
+        <div class:list={["beat", { last: i === story.length - 1 }]} data-fx={fx}>
+          <p class="eyebrow">{n} — {label}</p>
+          <p class="beat-line">{line}</p>
+        </div>
+      ))}
+      <div class="cue" aria-hidden="true">
+        <svg width="64" height="30" viewBox="0 0 64 30"><path d="M4 4 Q32 44 60 4" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="2" stroke-linecap="round"></path><path data-progress d="M4 4 Q32 44 60 4" pathLength="1" fill="none" stroke="#45c1ee" stroke-width="2" stroke-linecap="round" stroke-dasharray="1" stroke-dashoffset="1"></path></svg>
+        <span>SCROLL</span>
+      </div>
     </div>
   </section>
 
-  <section class="band facts-band">
-    <div class="shell">
-      <dl class="facts">
-        {facts.map(([label, value, icon]) => (
-          <div class="has-ico">
-            <Icon name={icon} tile />
-            <dt>{label}</dt>
-            <dd>{value}</dd>
-          </div>
+  <section class="facts pad">
+    <div class="facts-grid wrap">
+      {facts.map(([value, label, tone]) => (
+        <div class="fact" data-roll>
+          <span class={tone}>{value}</span>
+          <span>{label}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="one pad">
+    <p class="eyebrow">We do one thing</p>
+    <h2 class="h-xl">Veneers. Porcelain or composite. Nothing else.</h2>
+    <div class="cards wrap">
+      <a class="card" href="/porcelain-veneers-miami" data-tilt>
+        <div class="card-stage" data-stage><canvas data-tooth="porcelain"></canvas></div>
+        <p class="num cyan">01</p>
+        <h3>Porcelain veneers</h3>
+        <div class="chips"><span class="chip">2–3 weeks</span><span class="chip">0.3–0.7 mm</span><span class="chip">{price.porcelainTooth} / tooth</span></div>
+        <span class="link">Explore porcelain<Icon name="arrow-right" /></span>
+      </a>
+      <a class="card pinkish" href="/composite-veneers-miami" data-tilt>
+        <div class="card-stage" data-stage><canvas data-tooth="composite"></canvas></div>
+        <p class="num pink">02</p>
+        <h3>Composite veneers</h3>
+        <div class="chips"><span class="chip">1 visit</span><span class="chip">Sculpted chairside</span><span class="chip">{price.compositeTooth} / tooth</span></div>
+        <span class="link">Explore composite<Icon name="arrow-right" /></span>
+      </a>
+    </div>
+  </section>
+
+  {!pending(beforeAfter.before) && (
+  <section class="ba-sec pad" data-tilt-soft>
+    <div class="ba-head wrap">
+      <h2 class="h-xl">Before / after</h2>
+      <p>Drag the arc. Real patients, photographed in our Miami studio.</p>
+    </div>
+    <div class="ba-persp wrap">
+      <div class="ba" data-tiltchild>
+        <img src={beforeAfter.after} alt="Smile after veneers" loading="lazy" />
+        <div class="ba-before"><img src={beforeAfter.before} alt="Smile before veneers" loading="lazy" /></div>
+        <span class="tag">BEFORE</span>
+        <span class="tag after">AFTER</span>
+        <div class="ba-line"></div>
+        <div class="knob"><svg width="34" height="18" viewBox="0 0 34 18"><path d="M3 4 Q17 22 31 4" fill="none" stroke="#0b2138" stroke-width="2.6" stroke-linecap="round"></path></svg></div>
+        <input type="range" min="2" max="98" value="50" aria-label="Compare before and after" data-hover />
+      </div>
+    </div>
+  </section>
+  )}
+
+  <section class="process" data-ptrack>
+    <div class="process-pin">
+      <div class="process-head pad">
+        <h2 class="h-xl">Smile design in 4 steps</h2>
+        <div class="bar"><div data-pbar></div></div>
+      </div>
+      <div class="process-row pad" data-prow>
+        {process.map(([img, title, text, tone], i) => (
+          <article>
+            <img class="process-img" src={`/img/${img}`} alt="" loading="lazy" />
+            <div>
+              <span class:list={["process-n outline", tone]}>{String(i + 1).padStart(2, "0")}</span>
+              <h3>{title}</h3>
+              <p>{text}</p>
+            </div>
+          </article>
         ))}
-      </dl>
-    </div>
-  </section>
-
-  <section class="band">
-    <div class="shell">
-      <h2>We do one thing</h2>
-      <p class="lede">
-        Healthy Xmile is not a general dental office. We focus on anterior cosmetic dentistry:
-        porcelain veneers, composite veneers, and the design work that holds them together.
-        That focus is why our cases look natural.
-      </p>
-      <ul class="rule-list services">
-        <li class="has-ico">
-          <Icon name="gem" tile />
-          <h3>Porcelain veneers</h3>
-          <p>
-            Thin ceramic shells that correct shape, color and apparent position. Stain
-            resistant, 10 to 20 years with proper care, and they bring back the translucency of
-            natural enamel.
-          </p>
-          <a href="/porcelain-veneers-miami">Porcelain veneers</a>
-        </li>
-        <li class="has-ico">
-          <Icon name="paintbrush" tile />
-          <h3>Composite veneers</h3>
-          <p>
-            Sculpted directly onto the tooth in a single visit. Lower cost, often reversible,
-            and adjustable later. A good fit for targeted corrections, or for testing a change
-            before committing.
-          </p>
-          <a href="/composite-veneers-miami">Composite veneers</a>
-        </li>
-        <li class="has-ico">
-          <Icon name="sparkles" tile />
-          <h3>Smile design</h3>
-          <p>
-            The full plan: facial analysis, photography, digital preview and a trial smile in
-            your mouth before anything is final.
-          </p>
-          <a href="/smile-design">How smile design works</a>
-        </li>
-      </ul>
-    </div>
-  </section>
-
-  <section class="band process">
-    <div class="shell process-grid">
-      <div>
-        <h2>How it works</h2>
-        <p class="lede">Five visits, and you approve the result before anything permanent is made.</p>
-        <img class="process-img" src="/img/dentist-at-work.webp" width="900" height="600" alt="Dentist examining a patient in the treatment chair" loading="lazy" />
       </div>
-      <ol class="steps">
-        <li>
-          <h3>Consultation</h3>
-          <p>We examine your teeth, gums and bite, take photographs and scan. We tell you what's possible and what isn't, without overpromising.</p>
-        </li>
-        <li>
-          <h3>Design and preview</h3>
-          <p>We design your smile on your own photos. You review it, we adjust it. Nothing gets made until you're satisfied.</p>
-        </li>
-        <li>
-          <h3>Trial smile</h3>
-          <p>We place a temporary version over your teeth so you can see it move, talk, smile, and decide with real information.</p>
-        </li>
-        <li>
-          <h3>Placement</h3>
-          <p>We bond the final veneers, adjust your bite and polish. You leave with your smile finished that day.</p>
-        </li>
-        <li>
-          <h3>Follow-up</h3>
-          <p>A check-up shortly after placement, plus long-term follow-up and care instructions.</p>
-        </li>
-      </ol>
     </div>
   </section>
 
-  <section class="band">
-    <div class="shell">
-      <h2>Why patients choose us</h2>
-      <div class="reasons">
-        <div class="has-ico">
-          <Icon name="shield-check" tile />
-          <h3>We say no when no is the right answer</h3>
-          <p>If your teeth need something else before veneers, we tell you. A veneer over an unresolved problem is money wasted.</p>
+  <section class="craft pad">
+    <p class="eyebrow">Craft</p>
+    <h2 class="h-xl">Why ours don’t look fake</h2>
+    <div class="craft-grid wrap">
+      {craft.map(([at, title, text]) => (
+        <div>
+          <div class="loupe" data-loupe data-hover style={`background-position:${at}`}></div>
+          <h3 class="h-m">{title}</h3>
+          <p>{text}</p>
         </div>
-        <div class="has-ico">
-          <Icon name="eye" tile />
-          <h3>You see it before you commit</h3>
-          <p>The digital preview isn't an upsell. It's part of the process, and it's included in the consultation.</p>
-        </div>
-        <div class="has-ico">
-          <Icon name="badge-dollar-sign" tile />
-          <h3>Fixed pricing</h3>
-          <p>The estimate you sign is what you pay. Diagnosis, design, temporaries and follow-ups are in the price.</p>
-        </div>
-        <div class="has-ico">
-          <Icon name="languages" tile />
-          <h3>Fully bilingual</h3>
-          <p>Consultation, treatment plan and follow-up in English or Spanish, whichever you prefer.</p>
+      ))}
+    </div>
+  </section>
+
+  <section class="words">
+    <h2 class="h-xl pad">In their words</h2>
+    <p class="pad hint">Drag to turn.</p>
+    <div class="spin" data-spin>
+      <div class="ring-wrap">
+        <div class="ring" data-ring>
+          {testimonials.map((t, i) => (
+            <figure class:list={[{ "tint-c": i === 4, "tint-p": i === 2 }]} style={`transform:rotateY(${i * (360 / testimonials.length)}deg) translateZ(480px)`}>
+              <blockquote>“{t.quote}”</blockquote>
+              <figcaption>{t.name} · {t.treatment}</figcaption>
+            </figure>
+          ))}
         </div>
       </div>
     </div>
   </section>
 
-  <Faq items={faq} />
+  <Faq items={faq} heading="Questions we hear every day" />
 
-  <section class="band cta-band">
-    <div class="shell">
-      <h2>Ready to see your new smile?</h2>
-      <p class="lede">
-        Your consultation includes an exam, photographs and a preliminary digital preview.
-        No obligation.
-      </p>
-      <div class="actions">
-        <a class="btn" href="/contact">Book your consultation</a>
-        <a class="btn btn-quiet" href="/veneers-cost-miami">See pricing</a>
+  <section class="final pad">
+    <h2>A reason <span class="cyan">to smile!</span></h2>
+    <a class="btn big" href="/contact">Book your consultation<Icon name="arrow-right" /></a>
+    <div class="visit wrap">
+      <div class="map">
+        <iframe title="Map of Miami" loading="lazy" src="https://www.openstreetmap.org/export/embed.html?bbox=-80.30%2C25.70%2C-80.12%2C25.84&amp;layer=mapnik"></iframe>
+      </div>
+      <div class="visit-info">
+        <p class="addr">{clinic.street}<br />{clinic.city}, {clinic.region} {clinic.zip}</p>
+        <div class="hours">{clinic.hours.map(([day, time]) => <><span>{day}</span><span>{time}</span></>)}</div>
+        <div class="actions">
+          <a class="btn ghost md" href={tel}><Icon name="phone" />{clinic.phone}</a>
+          <a class="btn ghost md" href={directions} target="_blank" rel="noopener"><Icon name="map-pin" />Directions</a>
+        </div>
       </div>
     </div>
   </section>
 </Base>
 
 <style>
-  .hero { padding-block: clamp(2.5rem, 6vw, 5rem) 0; }
-  .hero-grid {
-    display: grid;
-    gap: clamp(2rem, 5vw, 4rem);
-    align-items: center;
-    grid-template-columns: minmax(0, 1fr);
+  /* ---------- Hero ---------- */
+  .hero { position: relative; height: 3400px; }
+  .stage { position: sticky; top: 0; height: 100vh; overflow: hidden; }
+  .flash { position: absolute; inset: 0; opacity: 0; pointer-events: none; background: radial-gradient(circle at 66% 52%, rgba(255, 255, 255, 0.9), rgba(69, 193, 238, 0.2) 26%, transparent 55%); }
+  .load { position: absolute; right: clamp(20px, 8vw, 140px); bottom: 22%; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 8px; pointer-events: none; }
+  .load span:first-child { font: 600 28px/1 var(--display); letter-spacing: -0.02em; }
+  .load span:last-child { font: 500 11px/1 var(--body); letter-spacing: 0.22em; color: rgba(255, 255, 255, 0.6); }
+  .intro {
+    position: absolute; left: var(--gut); top: 0; bottom: 0; z-index: 3; width: min(660px, calc(100% - 40px));
+    display: flex; flex-direction: column; justify-content: center; gap: 28px;
   }
-  @media (min-width: 900px) {
-    .hero-grid { grid-template-columns: 1.05fr 0.95fr; }
-  }
-  .hero-meta { margin-top: 2rem; color: var(--ink-soft); font-size: 0.98rem; }
-  .hero-meta .line { margin-bottom: 0.4rem; }
-
-  .arch { margin: 0; position: relative; }
-  .arch::before {
-    content: "";
-    position: absolute;
-    inset: -1.2rem -1.2rem 0;
-    border: 1.5px solid var(--cyan);
-    border-bottom: none;
-    border-radius: var(--arch);
-  }
-  .arch img {
-    position: relative;
-    border-radius: var(--arch);
-    width: 100%;
-    aspect-ratio: 4 / 5;
-    max-height: min(68vh, 34rem);
-    object-fit: cover;
-    object-position: 50% 62%;
-    animation: clip-up 1.3s cubic-bezier(0.22, 0.75, 0.3, 1) 0.15s both;
-  }
-  .arch::before { animation: outline-in 1.2s cubic-bezier(0.22, 0.75, 0.3, 1) 0.5s both, float 7s ease-in-out 1.7s infinite; }
-  @keyframes outline-in { from { opacity: 0; scale: 0.88; } }
-  @keyframes float { 50% { translate: 0 -0.7rem; } }
-  .badge {
-    position: absolute; z-index: 1; display: grid; place-items: center; border-radius: 50%; color: #fff;
-    animation: pop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both, float 5s ease-in-out infinite;
-  }
-  .badge :global(svg) { width: 55%; height: 55%; }
-  .b1 { width: 3.8rem; height: 3.8rem; right: -1rem; top: 14%; background: var(--pink); box-shadow: 0 12px 26px -8px rgba(232, 46, 137, 0.6); animation-delay: 1s, 1.8s; }
-  .b2 { width: 3rem; height: 3rem; left: -1rem; bottom: 16%; background: var(--cyan); box-shadow: 0 12px 26px -8px rgba(69, 193, 238, 0.7); animation-delay: 1.2s, 2.6s; }
-  @keyframes pop { from { opacity: 0; scale: 0; } }
-
-  .facts-band { background: var(--blush); border-top: none; }
-  .facts {
-    margin: 0;
-    display: grid;
-    gap: 1.8rem;
-    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
-  }
-  :global(.facts .has-ico:nth-child(n) > .tile) { --bg: #fff; } /* Icon's markup carries no scope attribute */
-  .facts dt { color: var(--ink-soft); font-size: 0.95rem; }
-  .facts dd {
-    margin: 0.2rem 0 0;
-    font-family: Gabarito, sans-serif;
-    font-size: 1.35rem;
-    font-weight: 600;
+  .intro .eyebrow { margin: 0; }
+  h1 { font: 800 clamp(54px, 8.2vw, 108px)/0.86 var(--display); letter-spacing: -0.05em; font-stretch: 76%; }
+  h1 span { display: inline-block; }
+  h1 .c { color: var(--cyan); }
+  h1 .l { font-weight: 300; font-stretch: 100%; }
+  .beat { position: absolute; left: var(--gut); top: 30%; width: min(540px, calc(100% - 40px)); opacity: 0; }
+  .beat .eyebrow { margin-bottom: 18px; letter-spacing: 0.2em; }
+  .beat-line { font: 700 clamp(44px, 6vw, 76px)/0.9 var(--display); letter-spacing: -0.045em; font-stretch: 78%; }
+  .beat.last { width: min(580px, calc(100% - 40px)); }
+  .beat.last .beat-line { font-size: clamp(52px, 7.4vw, 96px); font-weight: 800; line-height: 0.88; letter-spacing: -0.05em; font-stretch: 76%; }
+  .cue { position: absolute; right: 110px; bottom: 40px; /* clear of the WhatsApp button */ z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .cue span { font: 500 11px/1 var(--body); letter-spacing: 0.2em; color: rgba(255, 255, 255, 0.6); }
+  @media (max-width: 1179px) {
+    .intro { justify-content: flex-start; padding-top: 120px; }
   }
 
-  .services li a { font-weight: 600; }
-  .services p { margin-bottom: 0.6rem; }
+  /* ---------- Facts ---------- */
+  .facts { position: relative; padding-block: clamp(80px, 10vw, 140px); background: radial-gradient(60% 80% at 15% 0%, rgba(232, 46, 137, 0.14), transparent 70%), var(--navy); }
+  .facts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 48px 32px; }
+  .fact { display: flex; flex-direction: column; gap: 14px; }
+  .fact span:first-child { font: 800 clamp(60px, 7vw, 104px)/0.85 var(--display); letter-spacing: -0.05em; font-stretch: 76%; }
+  .fact span:last-child { max-width: 220px; font: 500 17px/1.4 var(--body); color: rgba(255, 255, 255, 0.82); }
 
-  .process-grid { display: grid; gap: clamp(2rem, 5vw, 4rem); grid-template-columns: minmax(0, 1fr); }
-  @media (min-width: 900px) {
-    .process-grid { grid-template-columns: 0.9fr 1.1fr; }
+  /* ---------- Services ---------- */
+  .one { padding-block: clamp(60px, 8vw, 120px) clamp(80px, 10vw, 140px); }
+  .one h2 { max-width: 900px; margin-bottom: 56px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 28px; }
+  .card {
+    position: relative; display: flex; flex-direction: column; min-height: 620px; padding: 0 36px 36px; color: #fff; text-decoration: none; overflow: hidden;
+    border-radius: 400px 400px 32px 32px / 260px 260px 32px 32px; border: 1px solid rgba(255, 255, 255, 0.14);
+    background: linear-gradient(180deg, rgba(69, 193, 238, 0.16), rgba(255, 255, 255, 0.03) 60%);
+    transition: transform 0.3s var(--ease); transform-style: preserve-3d;
   }
-  .process-img {
-    margin-top: 2rem;
-    border-radius: 1rem;
-    width: 100%;
-    aspect-ratio: 4 / 3;
-    object-fit: cover;
-  }
+  .card:hover { color: #fff; }
+  .card.pinkish { background: linear-gradient(180deg, rgba(232, 46, 137, 0.16), rgba(255, 255, 255, 0.03) 60%); }
+  .card-stage { position: relative; height: 340px; margin: 0 -36px; }
+  .num { margin-bottom: 10px; font: 500 13px/1 var(--body); letter-spacing: 0.2em; }
+  .card h3 { margin-bottom: 18px; font: 700 clamp(36px, 4vw, 56px)/0.92 var(--display); letter-spacing: -0.04em; font-stretch: 82%; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+  .card .link { margin-top: auto; }
 
-  .reasons {
-    display: grid;
-    gap: 2rem clamp(2rem, 5vw, 4rem);
-    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
-    margin-top: 2.5rem;
+  /* ---------- Before / after ---------- */
+  .ba-sec { padding-block: clamp(60px, 8vw, 120px); background: radial-gradient(70% 60% at 85% 30%, rgba(69, 193, 238, 0.16), transparent 70%); }
+  .ba-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 48px; }
+  .ba-head p { max-width: 340px; font: 400 17px/1.55 var(--body); color: rgba(255, 255, 255, 0.75); }
+  .ba-persp { perspective: 1600px; }
+  .ba {
+    --ba: 50%; position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: clamp(20px, 3vw, 40px);
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.45); transition: transform 0.4s var(--ease);
   }
-  .reasons h3 { font-size: 1.15rem; }
-  .reasons p { color: var(--ink-soft); margin: 0; }
+  .ba img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .ba-before { position: absolute; inset: 0; clip-path: inset(0 calc(100% - var(--ba)) 0 0); }
+  .tag { position: absolute; left: 20px; top: 20px; padding: 9px 13px; border-radius: 999px; font: 600 12px/1 var(--body); letter-spacing: 0.18em; background: rgba(11, 33, 56, 0.7); backdrop-filter: blur(10px); pointer-events: none; }
+  .tag.after { left: auto; right: 20px; background: var(--cyan); color: var(--navy); }
+  .ba-line { position: absolute; top: 0; bottom: 0; left: var(--ba); width: 2px; margin-left: -1px; background: #fff; pointer-events: none; }
+  .knob {
+    position: absolute; top: 50%; left: var(--ba); width: 76px; height: 76px; margin: -38px 0 0 -38px; border-radius: 50%;
+    background: #fff; display: grid; place-items: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35); pointer-events: none;
+  }
+  .ba input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: ew-resize; touch-action: pan-y; }
+  .ba:has(input:focus-visible) .knob { outline: 2px solid var(--cyan); outline-offset: 4px; }
+
+  /* ---------- Process (pinned, scrolls sideways) ---------- */
+  .process { position: relative; height: 340vh; }
+  .process-pin { position: sticky; top: 0; height: 100vh; overflow: hidden; display: flex; flex-direction: column; justify-content: center; gap: clamp(24px, 4vh, 48px); }
+  .process-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
+  .process-head h2 { font-size: clamp(40px, 5.4vw, 80px); }
+  .bar { flex: none; width: min(240px, 30vw); height: 3px; border-radius: 3px; background: rgba(255, 255, 255, 0.14); overflow: hidden; }
+  .bar div { height: 100%; background: var(--cyan); transform-origin: left; transform: scaleX(0); }
+  .process-row { display: flex; gap: clamp(20px, 3vw, 40px); will-change: transform; }
+  .process-row article { flex: none; width: min(82vw, 640px); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; align-items: end; }
+  .process-img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 999px 999px 28px 28px; }
+  .process-row article > div { display: flex; flex-direction: column; gap: 14px; padding-bottom: 12px; }
+  .process-n { font: 800 clamp(80px, 9vw, 140px)/0.8 var(--display); letter-spacing: -0.06em; }
+  .process-row h3 { font: 700 clamp(28px, 2.6vw, 38px)/1 var(--display); letter-spacing: -0.03em; }
+  .process-row p { font: 400 16px/1.55 var(--body); color: rgba(255, 255, 255, 0.75); }
+
+  /* ---------- Craft (cream) ---------- */
+  .craft {
+    padding-block: clamp(80px, 10vw, 140px); background: var(--cream); color: var(--navy);
+    border-radius: clamp(40px, 8vw, 120px) clamp(40px, 8vw, 120px) 0 0 / clamp(30px, 5vw, 80px) clamp(30px, 5vw, 80px) 0 0;
+  }
+  .craft .eyebrow { color: #0e6f93; }
+  .craft h2 { max-width: 900px; margin-bottom: 64px; }
+  .craft-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 48px 32px; }
+  .craft-grid > div { display: flex; flex-direction: column; gap: 18px; }
+  .craft-grid p { font: 400 16px/1.55 var(--body); color: #2b4257; }
+  .loupe {
+    width: min(100%, 260px); aspect-ratio: 1; border-radius: 50%;
+    background-image: url(/img/veneers-closeup.webp); background-size: 180%; background-repeat: no-repeat;
+    box-shadow: inset 0 0 0 8px #fff, 0 30px 60px rgba(11, 33, 56, 0.2); transition: background-size 0.9s var(--ease);
+  }
+  .loupe:hover { background-size: 520%; }
+
+  /* ---------- Testimonials ring ---------- */
+  .words { padding-block: clamp(80px, 10vw, 140px); overflow: hidden; background: radial-gradient(60% 60% at 50% 60%, rgba(69, 193, 238, 0.14), transparent 70%); }
+  .words h2 { margin-bottom: 20px; }
+  .hint { margin-bottom: 40px; font: 400 15px/1.5 var(--body); color: rgba(255, 255, 255, 0.6); }
+  .spin { height: 520px; display: grid; place-items: center; touch-action: pan-y; user-select: none; }
+  .ring-wrap { perspective: 1500px; transform-style: preserve-3d; }
+  @media (max-width: 1179px) { .ring-wrap { transform: scale(0.62); } }
+  .ring { position: relative; width: 320px; height: 400px; transform-style: preserve-3d; transform: translateZ(-480px); }
+  .ring figure {
+    position: absolute; inset: 0; padding: 32px; display: flex; flex-direction: column; justify-content: space-between; backface-visibility: hidden;
+    border-radius: 160px 160px 24px 24px / 110px 110px 24px 24px; border: 1px solid rgba(255, 255, 255, 0.18);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04)); backdrop-filter: blur(10px);
+  }
+  .ring figure.tint-p { background: linear-gradient(180deg, rgba(232, 46, 137, 0.2), rgba(255, 255, 255, 0.04)); }
+  .ring figure.tint-c { background: linear-gradient(180deg, rgba(69, 193, 238, 0.2), rgba(255, 255, 255, 0.04)); }
+  blockquote { margin-top: 60px; font: 600 24px/1.2 var(--display); letter-spacing: -0.02em; color: #fff; }
+  figcaption { font: 500 14px/1.4 var(--body); color: var(--cyan); }
+
+  /* ---------- Final CTA ---------- */
+  .final {
+    padding-block: clamp(80px, 10vw, 160px) clamp(60px, 8vw, 100px);
+    background: radial-gradient(80% 70% at 50% 100%, rgba(69, 193, 238, 0.28), transparent 70%), radial-gradient(40% 50% at 10% 80%, rgba(232, 46, 137, 0.2), transparent 70%);
+  }
+  .final h2 { margin-bottom: 40px; font: 800 clamp(64px, 13vw, 210px)/0.82 var(--display); letter-spacing: -0.06em; font-stretch: 76%; }
+  .btn.big { gap: 14px; font-size: clamp(17px, 1.6vw, 22px); padding: clamp(22px, 2vw, 30px) clamp(30px, 3vw, 44px); border-radius: 22px 22px 60px 60px / 22px 22px 40px 40px; box-shadow: 0 14px 60px rgba(69, 193, 238, 0.5); }
+  .visit { margin-top: clamp(60px, 8vw, 110px); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 32px; }
+  .map { position: relative; min-height: 340px; overflow: hidden; border-radius: 200px 200px 28px 28px / 120px 120px 28px 28px; border: 1px solid var(--line); }
+  .map iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; filter: invert(0.92) hue-rotate(180deg) saturate(0.7) brightness(0.95); }
+  .visit-info { display: flex; flex-direction: column; justify-content: center; gap: 22px; }
+  .addr { font: 600 30px/1.1 var(--display); letter-spacing: -0.02em; }
+  .hours { display: grid; grid-template-columns: auto 1fr; gap: 8px 28px; font: 400 16px/1.4 var(--body); color: var(--muted); }
+  .visit-info .btn { gap: 10px; }
 </style>
+
+<script>
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Service cards lean toward the pointer.
+  document.querySelectorAll<HTMLElement>("[data-tilt]").forEach((el) => {
+    el.addEventListener("mousemove", (e) => {
+      const r = el.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
+      el.style.transform = `perspective(1100px) rotateX(${(-y * 9).toFixed(2)}deg) rotateY(${(x * 11).toFixed(2)}deg)`;
+    });
+    el.addEventListener("mouseleave", () => (el.style.transform = ""));
+  });
+
+  // Before/after (rendered only once real photos are set): a transparent range input does the dragging, keyboard included.
+  const ba = document.querySelector<HTMLElement>(".ba");
+  if (ba) {
+    const range = ba.querySelector("input")!;
+    range.addEventListener("input", () => ba.style.setProperty("--ba", range.value + "%"));
+    const soft = document.querySelector<HTMLElement>("[data-tilt-soft]")!;
+    soft.addEventListener("mousemove", (e) => {
+      const x = e.clientX / innerWidth - 0.5, y = e.clientY / innerHeight - 0.5;
+      ba.style.transform = `rotateY(${(x * 8).toFixed(2)}deg) rotateX(${(-y * 5).toFixed(2)}deg)`;
+    });
+    soft.addEventListener("mouseleave", () => (ba.style.transform = ""));
+  }
+
+  // Testimonial ring: drifts on its own, drag to spin it.
+  const spin = document.querySelector<HTMLElement>("[data-spin]")!;
+  const ring = document.querySelector<HTMLElement>("[data-ring]")!;
+  const R = { a: 0, v: 8, drag: false, x: 0 };
+  spin.addEventListener("pointerdown", (e) => { R.drag = true; R.x = e.clientX; });
+  spin.addEventListener("pointermove", (e) => {
+    if (!R.drag) return;
+    const dx = e.clientX - R.x;
+    R.x = e.clientX; R.a -= dx * 0.25; R.v = -dx * 6;
+  });
+  ["pointerup", "pointerleave", "pointercancel"].forEach((t) => spin.addEventListener(t, () => (R.drag = false)));
+
+  // Process: the pinned row slides sideways as the section scrolls past.
+  const track = document.querySelector<HTMLElement>("[data-ptrack]")!;
+  const row = track.querySelector<HTMLElement>("[data-prow]")!, bar = track.querySelector<HTMLElement>("[data-pbar]")!;
+
+  let last = performance.now();
+  const frame = (now: number) => {
+    const dt = Math.min(0.05, (now - last) / 1000);
+    last = now;
+    const r = track.getBoundingClientRect(), p = Math.min(1, Math.max(0, -r.top / Math.max(1, r.height - innerHeight)));
+    row.style.transform = `translateX(${-p * Math.max(0, row.scrollWidth - innerWidth)}px)`;
+    bar.style.transform = `scaleX(${p})`;
+    if (!R.drag) { R.v += (8 - R.v) * 0.02; if (!reduced) R.a += R.v * dt; }
+    ring.style.transform = `translateZ(-480px) rotateY(${-R.a}deg)`;
+    requestAnimationFrame(frame);
+  };
+  requestAnimationFrame(frame);
+</script>

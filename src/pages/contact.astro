@@ -1,14 +1,12 @@
 ---
 import Base from "../layouts/Base.astro";
-import PageHero from "../components/PageHero.astro";
 import Icon from "../components/Icon.astro";
 import { clinic, form, pending } from "../site";
 
-const tel = pending(clinic.phone) ? null : `tel:${clinic.phone.replace(/[^+\d]/g, "")}`;
-const wa = pending(clinic.whatsapp)
-  ? null
-  : `https://wa.me/${clinic.whatsapp.replace(/[^\d]/g, "")}`;
-const mail = pending(clinic.email) ? null : `mailto:${clinic.email}`;
+const tel = pending(clinic.phone) ? undefined : `tel:${clinic.phone.replace(/[^+\d]/g, "")}`;
+const wa = pending(clinic.whatsapp) ? undefined : `https://wa.me/${clinic.whatsapp.replace(/[^\d]/g, "")}`;
+const mail = pending(clinic.email) ? undefined : `mailto:${clinic.email}`;
+const hours = clinic.hours.map(([day, time]) => `${day} ${time}`).join(" · ");
 ---
 
 <Base
@@ -16,106 +14,110 @@ const mail = pending(clinic.email) ? null : `mailto:${clinic.email}`;
   description="Book a veneers and smile design consultation in Miami. Exam, photographs and a digital preview, in English or Spanish."
   path="/contact"
 >
-  <PageHero
-    title="Book your consultation"
-    lede="Exam, photographs and a preliminary digital preview. Tell us what you'd like to change and we'll tell you what's possible."
-    image="/img/office.webp"
-    alt="Reception area of the Healthy Xmile dental office in Miami"
-  />
-
-  <section class="band">
-    <div class="shell split">
-      <div class="prose">
-        <h2>Visit us</h2>
-        <p class="line"><Icon name="map-pin" /><span>{clinic.street}<br />{clinic.city}, {clinic.region} {clinic.zip}</span></p>
-        <p class="line"><Icon name="phone" /><span>Phone: {tel ? <a href={tel}>{clinic.phone}</a> : clinic.phone}</span></p>
-        <p class="line"><Icon name="message-circle" /><span>WhatsApp: {wa ? <a href={wa}>{clinic.whatsapp}</a> : clinic.whatsapp}</span></p>
-        <p class="line"><Icon name="mail" /><span>Email: {mail ? <a href={mail}>{clinic.email}</a> : clinic.email}</span></p>
-
-        <h3><Icon name="clock" />Hours</h3>
-        <table>
-          <tbody>
-            {clinic.hours.map(([day, time]) => (
-              <tr>
-                <th scope="row">{day}</th>
-                <td>{time}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-
-        <p class="note" style="margin-top:2rem">
-          Consultations are available in English and Spanish. If you're traveling to Miami for
-          treatment, send photos first and we'll tell you whether your case is suitable before you
-          book travel.
-        </p>
+  <section class="contact pad">
+    <div class="info">
+      <p class="eyebrow">Contact</p>
+      <h1 class="h-mega">Book your consultation</h1>
+      <p class="lede">Tell us a little about your smile. We reply within one business day.</p>
+      <div class="actions">
+        <a class="btn md wa-btn" href={wa}><Icon name="message-circle" />WhatsApp</a>
+        <a class="btn ghost md" href={tel}><Icon name="phone" />{clinic.phone}</a>
       </div>
-
-      <div class="form-card">
-        {form.endpoint ? (
-          <form action={form.endpoint} method="post">
-            <h2>Request an appointment</h2>
-            <label>
-              Name
-              <input type="text" name="name" required autocomplete="name" />
-            </label>
-            <label>
-              Phone
-              <input type="tel" name="phone" required autocomplete="tel" />
-            </label>
-            <label>
-              Email
-              <input type="email" name="email" required autocomplete="email" />
-            </label>
-            <label>
-              What would you like to change about your smile?
-              <textarea name="message" rows="4"></textarea>
-            </label>
-            <fieldset>
-              <legend>Preferred language</legend>
-              <label class="inline"><input type="radio" name="language" value="English" checked /> English</label>
-              <label class="inline"><input type="radio" name="language" value="Spanish" /> Spanish</label>
-            </fieldset>
-            <button class="btn" type="submit">Request appointment</button>
-          </form>
-        ) : (
-          <div class="reach">
-            <h2>Reach us directly</h2>
-            <p>The fastest way to get a consultation on the calendar is a call or a message.</p>
-            <ul class="reach-list">
-              <li>{tel ? <a class="btn" href={tel}><Icon name="phone" />Call {clinic.phone}</a> : <span>Call {clinic.phone}</span>}</li>
-              <li>{wa ? <a class="btn btn-quiet" href={wa}><Icon name="message-circle" />WhatsApp {clinic.whatsapp}</a> : <span>WhatsApp {clinic.whatsapp}</span>}</li>
-              <li>{mail ? <a class="btn btn-quiet" href={mail}><Icon name="mail" />Email {clinic.email}</a> : <span>Email {clinic.email}</span>}</li>
-            </ul>
-          </div>
-        )}
-      </div>
+      <p class="addr">
+        {clinic.street}, {clinic.city}, {clinic.region} {clinic.zip}<br />{hours}
+      </p>
+      <p class="note">
+        Consultations in English and Spanish. Traveling to Miami for treatment? Send photos first and
+        we'll tell you whether your case is suitable before you book travel.
+      </p>
     </div>
+
+    {form.endpoint ? (
+      <>
+        <form class="arch-card" action={form.endpoint} method="post" data-form>
+          <label>Name<input name="name" required autocomplete="name" /></label>
+          <div class="two">
+            <label>Phone<input type="tel" name="phone" required autocomplete="tel" /></label>
+            <label>Email<input type="email" name="email" autocomplete="email" /></label>
+          </div>
+          <fieldset>
+            <legend>Interested in</legend>
+            <div class="chips">
+              <label><input type="radio" name="interest" value="Porcelain" checked />Porcelain</label>
+              <label><input type="radio" name="interest" value="Composite" />Composite</label>
+              <label><input type="radio" name="interest" value="Not sure yet" />Not sure yet</label>
+            </div>
+          </fieldset>
+          <label>What would you like to change?<textarea name="message" rows="4"></textarea></label>
+          <button class="btn" type="submit">Request my consultation</button>
+        </form>
+        <div class="arch-card sent" hidden data-sent>
+          <svg width="90" height="44" viewBox="0 0 90 44" aria-hidden="true"><path d="M6 8 Q45 70 84 8" fill="none" stroke="#45c1ee" stroke-width="5" stroke-linecap="round"></path></svg>
+          <h2 class="h-l">Request received.</h2>
+          <p class="lede">We’ll call you within one business day to set your consultation.</p>
+        </div>
+      </>
+    ) : (
+      <div class="arch-card reach">
+        <h2 class="h-l">Reach us directly</h2>
+        <p class="lede">The fastest way to get a consultation on the calendar is a call or a message.</p>
+        <a class="btn" href={tel}><Icon name="phone" />Call {clinic.phone}</a>
+        <a class="btn ghost" href={wa}><Icon name="message-circle" />WhatsApp {clinic.whatsapp}</a>
+        <a class="btn ghost" href={mail}><Icon name="mail" />{clinic.email}</a>
+      </div>
+    )}
   </section>
 </Base>
 
 <style>
-  .form-card {
-    background: var(--mist);
-    border-radius: 1rem;
-    padding: clamp(1.5rem, 4vw, 2.5rem);
+  .contact {
+    min-height: 100vh; padding-block: 150px 100px;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); gap: 56px;
+    background: radial-gradient(60% 60% at 20% 20%, rgba(69, 193, 238, 0.2), transparent 70%), radial-gradient(40% 50% at 90% 90%, rgba(232, 46, 137, 0.18), transparent 70%);
   }
-  .form-card h2 { margin-top: 0; }
-  form { display: grid; gap: 1.1rem; }
-  label { display: grid; gap: 0.35rem; font-weight: 500; }
+  .info { display: flex; flex-direction: column; gap: 26px; }
+  .info .eyebrow { margin: 0; }
+  .wa-btn { background: #25d366; box-shadow: none; }
+  .addr { font: 400 16px/1.6 var(--body); color: rgba(255, 255, 255, 0.7); }
+  .note { max-width: 460px; font: 400 15px/1.55 var(--body); color: rgba(255, 255, 255, 0.7); }
+
+  .arch-card { align-self: center; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(16px); }
+  .reach .btn, .reach .lede { align-self: flex-start; }
+  .sent { align-items: flex-start; gap: 20px; background: linear-gradient(180deg, rgba(69, 193, 238, 0.22), rgba(255, 255, 255, 0.04)); }
+  .arch-card[hidden] { display: none; }
+
+  label, legend { display: flex; flex-direction: column; gap: 8px; padding: 0; font: 500 13px/1 var(--body); letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255, 255, 255, 0.7); }
+  fieldset { border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
   input, textarea {
-    font: inherit;
-    padding: 0.7rem 0.8rem;
-    border: 1px solid var(--line);
-    border-radius: 0.5rem;
-    background: #fff;
-    color: inherit;
-    width: 100%;
+    padding: 16px 18px; border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(11, 33, 56, 0.6);
+    color: #fff; font: 400 17px/1.3 var(--body); letter-spacing: 0; text-transform: none; transition: border-color 0.2s;
   }
-  fieldset { border: none; padding: 0; margin: 0; display: grid; gap: 0.4rem; }
-  legend { font-weight: 500; padding: 0; margin-bottom: 0.35rem; }
-  .inline { display: flex; align-items: center; gap: 0.5rem; font-weight: 400; }
-  .inline input { width: auto; }
-  button { border: none; cursor: pointer; font: inherit; font-weight: 600; justify-self: start; }
-  .reach-list { list-style: none; margin: 1.5rem 0 0; padding: 0; display: grid; gap: 0.8rem; justify-items: start; }
+  input:focus, textarea:focus { border-color: var(--cyan); outline: none; }
+  textarea { resize: vertical; }
+  .two { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 18px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chips label {
+    flex-direction: row; padding: 12px 18px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.25);
+    font: 600 15px/1 var(--body); letter-spacing: 0; text-transform: none; color: #fff; transition: background 0.2s, color 0.2s;
+  }
+  .chips input { position: absolute; opacity: 0; pointer-events: none; }
+  .chips label:has(:checked) { background: var(--cyan); color: var(--navy); }
+  .chips label:has(:focus-visible) { outline: 2px solid var(--cyan); outline-offset: 3px; }
+  form .btn { margin-top: 6px; }
 </style>
+
+<script>
+  // Post in the background and show the confirmation; a normal POST if that fails.
+  const form = document.querySelector<HTMLFormElement>("[data-form]");
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch(form.action, { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } });
+      if (!res.ok) throw new Error(String(res.status));
+      form.hidden = true;
+      document.querySelector<HTMLElement>("[data-sent]")!.hidden = false;
+    } catch {
+      form.submit();
+    }
+  });
+</script>

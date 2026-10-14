@@ -5,4 +5,6 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://healthyxmile.com',
   integrations: [sitemap()],
+  // Pages load behind a curtain wipe; prefetching on hover makes the reveal instant.
+  prefetch: { prefetchAll: true },
 });

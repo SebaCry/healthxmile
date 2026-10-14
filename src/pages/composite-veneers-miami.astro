@@ -2,6 +2,7 @@
 import Base from "../layouts/Base.astro";
 import PageHero from "../components/PageHero.astro";
 import Faq from "../components/Faq.astro";
+import Icon from "../components/Icon.astro";
 import { price } from "../site";
 
 const comparison: [string, string, string][] = [
@@ -41,112 +42,109 @@ const faq: [string, string][] = [
   path="/composite-veneers-miami"
 >
   <PageHero
+    eyebrow="Composite veneers · Miami"
     title="Composite veneers in Miami"
-    lede="Built directly onto your tooth, layer by layer, in the same visit. Nothing goes to a lab, so the result depends almost entirely on the dentist's hand."
-    image="/img/patient-laugh.webp"
-    alt="Patient laughing after composite veneer treatment"
-  />
-
-  <section class="band">
-    <div class="shell split">
-      <div class="prose">
-        <h2>When composite is the better choice</h2>
-        <ul>
-          <li>You want a visible change without the porcelain investment</li>
-          <li>You need to correct one or two teeth, not the whole smile</li>
-          <li>You prefer a conservative option that often requires no preparation</li>
-          <li>You want to see how it looks before committing to porcelain</li>
-          <li>You're younger and your gum line is still maturing</li>
-        </ul>
-      </div>
-      <div class="prose">
-        <h2>When we don't recommend it</h2>
-        <ul>
-          <li>Deep internal staining</li>
-          <li>Untreated severe grinding</li>
-          <li>Full-smile cases where maximum longevity is the priority</li>
-        </ul>
-        <p class="note">
-          If composite isn't right for your case, we say so at the consultation rather than after
-          you've paid for it.
-        </p>
-      </div>
+    lede="Tooth-colored resin sculpted by hand directly on your teeth, layer by layer, following your digital design. Done in one visit."
+    tooth="composite"
+    glow="pink"
+  >
+    <div class="actions">
+      <a class="btn" href="/contact">Book your consultation</a>
+      <a class="btn ghost" href="/veneers-cost-miami">See pricing</a>
     </div>
+  </PageHero>
+
+  <section class="sec pad stats">
+    <div class="stat"><b class="cyan">1</b><span>visit, start to finish</span></div>
+    <div class="stat"><b>By hand</b><span>sculpted chairside, layer by layer</span></div>
+    <div class="stat"><b>{price.compositeTooth}</b><span>per tooth</span></div>
+    <div class="stat"><b class="pink">Preview</b><span>on your own face before we begin</span></div>
   </section>
 
-  <section class="band">
-    <div class="shell split">
-      <div class="prose">
-        <h2>The appointment</h2>
-        <p>
-          A single session of one to four hours, depending on how many teeth. Usually no
-          anesthesia when no preparation is needed. You leave with the finished result.
-        </p>
-        <h3>How long they last</h3>
-        <p>
-          Four to eight years. Composite stains over time — coffee, wine, tobacco — and loses
-          shine. We polish it in-office and it recovers much of its original look. It can be
-          repaired without redoing the whole case, which porcelain cannot.
-        </p>
-      </div>
-      <div class="prose">
-        <h2>Cost</h2>
-        <p>
-          From {price.compositeTooth} per tooth. A full case starts at {price.compositeCase},
-          with financing from {price.monthly} a month.
-        </p>
-        <p><a href="/veneers-cost-miami">See full pricing and payment plans</a></p>
-      </div>
+  <section class="sec pad split">
+    <div class="prose">
+      <h2>When composite is the better choice</h2>
+      <ul>
+        <li>You want a visible change without the porcelain investment</li>
+        <li>You need to correct one or two teeth, not the whole smile</li>
+        <li>You prefer a conservative option that often requires no preparation</li>
+        <li>You want to see how it looks before committing to porcelain</li>
+        <li>You're younger and your gum line is still maturing</li>
+      </ul>
     </div>
-  </section>
-
-  <section class="band">
-    <div class="shell">
-      <h2>Porcelain or composite</h2>
-      <p class="lede">
-        Neither is better in the abstract. The right one fits your case, your bite and your
-        budget.
+    <div class="prose">
+      <h2>When we don't recommend it</h2>
+      <ul>
+        <li>Deep internal staining</li>
+        <li>Untreated severe grinding</li>
+        <li>Full-smile cases where maximum longevity is the priority</li>
+      </ul>
+      <p class="note">
+        If composite isn't right for your case, we say so at the consultation rather than after
+        you've paid for it.
       </p>
-      <div class="table-scroll">
-        <table>
-          <thead>
-            <tr>
-              <th scope="col"></th>
-              <th scope="col">Porcelain</th>
-              <th scope="col">Composite</th>
-            </tr>
-          </thead>
-          <tbody>
-            {comparison.map(([label, porcelain, composite]) => (
-              <tr>
-                <th scope="row">{label}</th>
-                <td>{porcelain}</td>
-                <td>{composite}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <div class="prose" style="margin-top:2rem">
-        <p>
-          Changing your whole smile and thinking ten years out? Porcelain. Correcting a little,
-          spending less, or testing before you commit? Composite. We'll tell you which at your
-          consultation, and why.
-        </p>
-      </div>
+    </div>
+  </section>
+
+  <section class="sec pad split">
+    <div class="prose">
+      <h2>The appointment</h2>
+      <p>
+        A single session of one to four hours, depending on how many teeth. Usually no anesthesia
+        when no preparation is needed. You leave with the finished result.
+      </p>
+      <h3>How long they last</h3>
+      <p>
+        Four to eight years. Composite stains over time — coffee, wine, tobacco — and loses shine.
+        We polish it in-office and it recovers much of its original look. It can be repaired
+        without redoing the whole case, which porcelain cannot.
+      </p>
+    </div>
+    <div class="prose">
+      <h2>Cost</h2>
+      <p>
+        From {price.compositeTooth} per tooth. A full case starts at {price.compositeCase}, with
+        financing from {price.monthly} a month.
+      </p>
+      <p><a class="link" href="/veneers-cost-miami">See full pricing and payment plans</a></p>
+    </div>
+  </section>
+
+  <section class="sec pad split center">
+    <img class="arch" src="/img/patient-laugh.webp" width="900" height="1125" alt="Patient laughing after composite veneer treatment" loading="lazy" />
+    <div class="prose">
+      <h2>Porcelain or composite?</h2>
+      <p>
+        Composite is faster and costs less per tooth. Porcelain takes 2–3 weeks and holds its shine
+        longest. At your consultation we show you both on your digital preview and help you choose.
+      </p>
+      <a class="link" href="/porcelain-veneers-miami">Compare with porcelain<Icon name="arrow-right" /></a>
+    </div>
+  </section>
+
+  <section class="pad">
+    <div class="tbl wrap">
+      <table>
+        <thead>
+          <tr><th scope="col"></th><th scope="col">Porcelain</th><th scope="col">Composite</th></tr>
+        </thead>
+        <tbody>
+          {comparison.map(([label, porcelain, composite]) => (
+            <tr><th scope="row">{label}</th><td>{porcelain}</td><td>{composite}</td></tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   </section>
 
   <Faq items={faq} />
 
-  <section class="band cta-band">
-    <div class="shell">
-      <h2>One visit, one finished smile</h2>
-      <p class="lede">Send us a photo and we'll tell you whether composite suits your case.</p>
-      <div class="actions">
-        <a class="btn" href="/contact">Book your consultation</a>
-        <a class="btn btn-quiet" href="/porcelain-veneers-miami">Read about porcelain</a>
-      </div>
+  <section class="cta">
+    <h2>One visit, one <span class="cyan">finished smile</span></h2>
+    <p class="lede">Send us a photo and we'll tell you whether composite suits your case.</p>
+    <div class="actions">
+      <a class="btn" href="/contact">Book your consultation</a>
+      <a class="btn ghost" href="/porcelain-veneers-miami">Read about porcelain</a>
     </div>
   </section>
 </Base>
